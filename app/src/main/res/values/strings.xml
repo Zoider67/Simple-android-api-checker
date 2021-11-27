@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Api Checker</string>
+    <string name="notification_channel_name">Api Checker</string>
+    <string name="notification_channel_description">Api Checker notification</string>
+</resources>
