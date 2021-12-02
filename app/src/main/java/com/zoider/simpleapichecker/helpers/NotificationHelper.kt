@@ -14,40 +14,83 @@ import com.zoider.simpleapichecker.activities.MainActivity
 class NotificationHelper(val context: Context) {
 
     private val DEFAULT_CHANNEL_ID = "0"
+    private val ERROR_CHANNEL_ID = "1"
+
+    private val pendingIntent: PendingIntent =
+        Intent(context, MainActivity::class.java).let { notificationIntent ->
+            notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            PendingIntent.getActivity(
+                context,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE
+            )
+        }
+
+    private lateinit var notificationManager: NotificationManager
 
     init {
         createNotificationChannel()
     }
 
     private fun createNotificationChannel() {
-        val name = context.getString(R.string.notification_channel_name)
-        val descriptionText = context.getString(R.string.notification_channel_description)
-        val importance = NotificationManager.IMPORTANCE_HIGH
-        val channel = NotificationChannel(DEFAULT_CHANNEL_ID, name, importance).apply {
-            description = descriptionText
+        val defaultChannel = NotificationChannel(
+            DEFAULT_CHANNEL_ID,
+            "Default ApiChecker",
+            NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = "Default ApiChecker notification channel"
         }
-        val notificationManager: NotificationManager =
+        val errorChannel = NotificationChannel(
+            ERROR_CHANNEL_ID,
+            "Error ApiChecker",
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "Error ApiChecker notification channel"
+        }
+        notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.createNotificationChannel(channel)
+        notificationManager.createNotificationChannel(defaultChannel)
+        notificationManager.createNotificationChannel(errorChannel)
     }
 
+    //TODO: redesign notifications to be more informative
     fun getDefaultNotification(): Notification {
-        val pendingIntent: PendingIntent =
-            Intent(context, MainActivity::class.java).let { notificationIntent ->
-                notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                PendingIntent.getActivity(
-                    context,
-                    0,
-                    notificationIntent,
-                    PendingIntent.FLAG_IMMUTABLE
-                )
-            }
-
         return NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("kek")
-            .setContentText("kekW")
+            .setSmallIcon(R.drawable.baseline_check_circle_black_36)
+            .setContentTitle("online")
+            .setContentText("online")
             .setContentIntent(pendingIntent)
             .build()
+    }
+
+    fun getNoNetworkNotificaiton(): Notification {
+        return NotificationCompat.Builder(context, DEFAULT_CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_help_black_36)
+            .setContentTitle("offline")
+            .setContentText("offline")
+            .setContentIntent(pendingIntent)
+            .build()
+    }
+
+    fun getErrorNotification(): Notification {
+        return NotificationCompat.Builder(context, ERROR_CHANNEL_ID)
+            .setSmallIcon(R.drawable.baseline_error_36)
+            .setContentTitle("error")
+            .setContentText("error")
+            .setContentIntent(pendingIntent)
+            .build()
+    }
+
+    fun sendDefaultNotification() {
+        notificationManager.notify(1, getDefaultNotification())
+    }
+
+    fun sendNoNetworkNotification(){
+        notificationManager.notify(2, getNoNetworkNotificaiton())
+    }
+
+    fun sendErrorNotification() {
+        notificationManager.notify(3, getErrorNotification())
     }
 }

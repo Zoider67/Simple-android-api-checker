@@ -6,20 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
+    <!--TODO: improve design (new time select, api status, etc.)-->
 
-    <EditText
-        android:id="@+id/url_edit_text"
-        android:text="http://192.168.1.66:80/api/test/"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="64dp"
         android:layout_marginTop="160dp"
-        android:layout_marginEnd="64dp"
-        android:importantForAutofill="no"
-        android:inputType="textUri" />
+        android:layout_marginEnd="64dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/url" />
+
+        <EditText
+            android:id="@+id/url_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="textUri"
+            android:singleLine="false"
+            android:text="http://192.168.1.66:80/api/test/" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="224dp"
+        android:layout_marginEnd="64dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/time_minutes" />
+
+        <EditText
+            android:id="@+id/time_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:singleLine="false"
+            android:text="30" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/start_service_button"
@@ -30,7 +69,19 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="64dp"
         android:layout_marginEnd="64dp"
+        android:layout_marginBottom="64dp"
+        android:text="@string/start_service" />
+
+    <Button
+        android:id="@+id/stop_service_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="64dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginBottom="16dp"
-        android:text="start service" />
+        android:text="@string/stop_service" />
 
 </RelativeLayout>

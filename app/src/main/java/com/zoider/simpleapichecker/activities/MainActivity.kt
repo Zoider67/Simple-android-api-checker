@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         val INTENT_EXTRA_KEY_URL = "url"
+        val INTENT_EXTRA_KEY_TIME = "time"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,13 +22,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val startServiceButton = findViewById<Button>(R.id.start_service_button)
+        val stopServiceButton = findViewById<Button>(R.id.stop_service_button)
         val urlEditText = findViewById<EditText>(R.id.url_edit_text)
+        val timeEditText = findViewById<EditText>(R.id.time_edit_text)
 
         startServiceButton.setOnClickListener {
-            val intent: Intent = Intent(this, ApiCheckerService::class.java)
+            val intent = Intent(this, ApiCheckerService::class.java)
             intent.putExtra(INTENT_EXTRA_KEY_URL, urlEditText.text.toString())
+            intent.putExtra(INTENT_EXTRA_KEY_TIME, timeEditText.text.toString().toLongOrNull())
             val res = applicationContext.startForegroundService(intent)
             res.let { Log.d(this.packageName, "starting service: $it") }
+        }
+
+        stopServiceButton.setOnClickListener {
+            val intent = Intent(this, ApiCheckerService::class.java)
+            applicationContext.stopService(intent)
         }
     }
 }

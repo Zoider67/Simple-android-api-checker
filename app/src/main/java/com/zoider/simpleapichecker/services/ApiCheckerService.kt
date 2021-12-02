@@ -4,7 +4,9 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import com.zoider.simpleapichecker.activities.MainActivity
+import com.zoider.simpleapichecker.helpers.ApiState
 import com.zoider.simpleapichecker.helpers.ApiStateChecker
 import com.zoider.simpleapichecker.helpers.NotificationHelper
 
@@ -15,7 +17,7 @@ class ApiCheckerService : Service() {
 
     override fun onCreate() {
         notificationHelper = NotificationHelper(this)
-        apiStateChecker = ApiStateChecker()
+        apiStateChecker = ApiStateChecker(this)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -25,11 +27,25 @@ class ApiCheckerService : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(1, notificationHelper.getDefaultNotification())
         Log.d("ApiCheckerService: ", "onStartCommand()")
+
         if (intent != null) {
             val url: String? = intent.getStringExtra(MainActivity.INTENT_EXTRA_KEY_URL)
+            val time: Long = intent.getLongExtra(MainActivity.INTENT_EXTRA_KEY_TIME, 30)
             Log.d("ApiCheckerService: ", "getting url from activity: $url")
             if (url != null && url.isNotEmpty()) {
-                apiStateChecker.startCheck(url)
+                Toast.makeText(
+                    this,
+                    "Start checking each $time minutes on $url",
+                    Toast.LENGTH_SHORT
+                ).show()
+                apiStateChecker.startCheck(url, time) {
+                    when (it) {
+                        ApiState.ONLINE -> notificationHelper.sendDefaultNotification()
+                        ApiState.NO_NETWORK -> notificationHelper.sendNoNetworkNotification()
+                        ApiState.SERVER_IS_NOT_AVAILABLE -> notificationHelper.sendErrorNotification()
+                        else -> notificationHelper.sendDefaultNotification()
+                    }
+                }
             }
         }
         return START_STICKY
@@ -37,6 +53,7 @@ class ApiCheckerService : Service() {
 
     override fun onDestroy() {
         apiStateChecker.cleanScope()
+        Toast.makeText(this, "Service destroyed", Toast.LENGTH_SHORT).show()
         super.onDestroy()
     }
 }
