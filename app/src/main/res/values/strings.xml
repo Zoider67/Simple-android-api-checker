@@ -6,4 +6,9 @@
     <string name="stop_service">stop service</string>
     <string name="start_service">start service</string>
     <string name="time_minutes">Time (minutes):</string>
+    <string name="api_state_online">Online</string>
+    <string name="api_state_connection_error">Connection error</string>
+    <string name="api_state_server_error">Server error</string>
+    <string name="api_notification_status">Status: </string>
+    <string name="api_notification_last_update">Last update: </string>
 </resources>

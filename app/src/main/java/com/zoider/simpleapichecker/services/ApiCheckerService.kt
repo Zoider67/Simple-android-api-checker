@@ -6,9 +6,8 @@ import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import com.zoider.simpleapichecker.activities.MainActivity
-import com.zoider.simpleapichecker.helpers.ApiState
 import com.zoider.simpleapichecker.helpers.ApiStateChecker
-import com.zoider.simpleapichecker.helpers.NotificationHelper
+import com.zoider.simpleapichecker.notifications.NotificationHelper
 
 class ApiCheckerService : Service() {
 
@@ -39,12 +38,7 @@ class ApiCheckerService : Service() {
                     Toast.LENGTH_SHORT
                 ).show()
                 apiStateChecker.startCheck(url, time) {
-                    when (it) {
-                        ApiState.ONLINE -> notificationHelper.sendDefaultNotification()
-                        ApiState.NO_NETWORK -> notificationHelper.sendNoNetworkNotification()
-                        ApiState.SERVER_IS_NOT_AVAILABLE -> notificationHelper.sendErrorNotification()
-                        else -> notificationHelper.sendDefaultNotification()
-                    }
+                    notificationHelper.showApiStateNotification(it)
                 }
             }
         }
