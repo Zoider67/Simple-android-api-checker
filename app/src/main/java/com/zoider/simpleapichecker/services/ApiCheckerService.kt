@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
-import com.zoider.simpleapichecker.activities.MainActivity
+import com.zoider.simpleapichecker.views.activities.MainActivity
 import com.zoider.simpleapichecker.helpers.ApiStateChecker
 import com.zoider.simpleapichecker.notifications.NotificationHelper
 
@@ -24,7 +24,7 @@ class ApiCheckerService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        startForeground(1, notificationHelper.getDefaultNotification())
+        startForeground(1, notificationHelper.getApiStatusNotification())
         Log.d("ApiCheckerService: ", "onStartCommand()")
 
         if (intent != null) {
@@ -34,7 +34,7 @@ class ApiCheckerService : Service() {
             if (url != null && url.isNotEmpty()) {
                 Toast.makeText(
                     this,
-                    "Start checking each $time minutes on $url",
+                    "Start checking each $time milliseconds on $url",
                     Toast.LENGTH_SHORT
                 ).show()
                 apiStateChecker.startCheck(url, time) {

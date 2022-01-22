@@ -9,10 +9,11 @@ import com.zoider.simpleapichecker.helpers.ApiState
 
 class NotificationHelper(val context: Context) {
 
-    private val DEFAULT_CHANNEL_ID = "0"
-    private val ERROR_CHANNEL_ID = "1"
-
-    private val API_STATE_NOTIFICATION_ID = 1
+    companion object {
+        private const val DEFAULT_CHANNEL_ID = "0"
+        private const val ERROR_CHANNEL_ID = "1"
+        private const val API_STATE_NOTIFICATION_ID = 1
+    }
 
     private lateinit var notificationManager: NotificationManager
 
@@ -41,7 +42,7 @@ class NotificationHelper(val context: Context) {
         notificationManager.createNotificationChannel(errorChannel)
     }
 
-    fun getDefaultNotification(): Notification {
+    fun getApiStatusNotification(): Notification {
         return ApiStatusNotification(context, DEFAULT_CHANNEL_ID).build(ApiState.ONLINE)
     }
 

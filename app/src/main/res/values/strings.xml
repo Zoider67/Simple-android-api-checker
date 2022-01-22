@@ -11,4 +11,7 @@
     <string name="api_state_server_error">Server error</string>
     <string name="api_notification_status">Status: </string>
     <string name="api_notification_last_update">Last update: </string>
+    <string name="minutes">Minutes</string>
+    <string name="hours">Hours</string>
+    <string name="seconds">Seconds</string>
 </resources>
