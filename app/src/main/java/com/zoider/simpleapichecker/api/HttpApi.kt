@@ -1,40 +1,19 @@
-package com.zoider.simpleapichecker.helpers
+package com.zoider.simpleapichecker.api
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
+import com.zoider.simpleapichecker.schedulers.IIntervalTask
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import java.util.concurrent.TimeUnit
 
+class HttpApi: IIntervalTask {
 
-class ApiStateChecker(val context: Context) {
-
-    private val scope = CoroutineScope(Job() + Dispatchers.IO)
     private val httpClient = HttpClient(CIO)
-
-    fun startCheck(url: String, time: Long, onResponse: (apiState: ApiState) -> Any) {
-        scope.launch {
-            val flow = getFlow(url, time)
-            flow.collect { value -> onResponse(value) }
-        }
-    }
-
-    fun getFlow(url: String, time: Long): Flow<ApiState> = flow {
-        Log.d("ApiChecker: ", "start flow checking on $url")
-        while (true) {
-            delay(time)
-            emit(check(url))
-        }
-    }
 
     private suspend fun check(url: String): ApiState {
         var result: ApiState
@@ -66,7 +45,7 @@ class ApiStateChecker(val context: Context) {
         return connectivityManager.activeNetworkInfo?.isConnected == true
     }
 
-    fun cleanScope() {
-        scope.cancel()
+    override fun execute() {
+        TODO("Not yet implemented")
     }
 }

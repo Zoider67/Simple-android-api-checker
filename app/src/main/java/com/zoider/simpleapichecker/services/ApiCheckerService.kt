@@ -6,17 +6,17 @@ import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import com.zoider.simpleapichecker.views.activities.MainActivity
-import com.zoider.simpleapichecker.helpers.ApiStateChecker
+import com.zoider.simpleapichecker.schedulers.IntervalScheduler
 import com.zoider.simpleapichecker.notifications.NotificationHelper
 
 class ApiCheckerService : Service() {
 
     private lateinit var notificationHelper: NotificationHelper
-    private lateinit var apiStateChecker: ApiStateChecker
+    private lateinit var intervalScheduler: IntervalScheduler
 
     override fun onCreate() {
         notificationHelper = NotificationHelper(this)
-        apiStateChecker = ApiStateChecker(this)
+        intervalScheduler = IntervalScheduler(this)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -37,7 +37,7 @@ class ApiCheckerService : Service() {
                     "Start checking each $time milliseconds on $url",
                     Toast.LENGTH_SHORT
                 ).show()
-                apiStateChecker.startCheck(url, time) {
+                intervalScheduler.start(url, time) {
                     notificationHelper.showApiStateNotification(it)
                 }
             }
@@ -46,7 +46,7 @@ class ApiCheckerService : Service() {
     }
 
     override fun onDestroy() {
-        apiStateChecker.cleanScope()
+        intervalScheduler.cleanScope()
         Toast.makeText(this, "Service destroyed", Toast.LENGTH_SHORT).show()
         super.onDestroy()
     }
