@@ -13,13 +13,28 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
+import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
+import javax.net.ssl.X509TrustManager
 
 
 class ApiStateChecker(val context: Context) {
 
     private val scope = CoroutineScope(Job() + Dispatchers.IO)
-    private val httpClient = HttpClient(CIO)
+    private val httpClient = HttpClient(CIO){
+        engine {
+            https {
+                trustManager = object: X509TrustManager {
+                    override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) { }
+
+                    override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) { }
+
+                    override fun getAcceptedIssuers(): Array<X509Certificate>? = null
+                }
+            }
+        }
+    }
+
 
     fun startCheck(url: String, time: Long, onResponse: (apiState: ApiState) -> Any) {
         scope.launch {
