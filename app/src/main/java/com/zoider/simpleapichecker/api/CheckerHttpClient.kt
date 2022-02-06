@@ -1,5 +1,6 @@
-package com.zoider.simpleapichecker.helpers
+package com.zoider.simpleapichecker.api
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.Log
@@ -9,49 +10,47 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
 import java.security.cert.X509Certificate
-import java.util.concurrent.TimeUnit
 import javax.net.ssl.X509TrustManager
 
+class CheckerHttpClient(
+    private val context: Context,
+    private val url: String,
+    private val skipSSL: Boolean
+) {
 
-class ApiStateChecker(val context: Context) {
-
-    private val scope = CoroutineScope(Job() + Dispatchers.IO)
-    private val httpClient = HttpClient(CIO){
+    private val httpClient: HttpClient = HttpClient(CIO) {
         engine {
             https {
-                trustManager = object: X509TrustManager {
-                    override fun checkClientTrusted(p0: Array<out X509Certificate>?, p1: String?) { }
-
-                    override fun checkServerTrusted(p0: Array<out X509Certificate>?, p1: String?) { }
-
-                    override fun getAcceptedIssuers(): Array<X509Certificate>? = null
+                if (skipSSL) {
+                    trustManager = buildSkipSSLTrustManager()
                 }
             }
         }
     }
 
+    @SuppressLint("CustomX509TrustManager")
+    private fun buildSkipSSLTrustManager(): X509TrustManager {
+        return object : X509TrustManager {
+            @SuppressLint("TrustAllX509TrustManager")
+            override fun checkClientTrusted(
+                p0: Array<out X509Certificate>?,
+                p1: String?
+            ) {
+            }
 
-    fun startCheck(url: String, time: Long, onResponse: (apiState: ApiState) -> Any) {
-        scope.launch {
-            val flow = getFlow(url, time)
-            flow.collect { value -> onResponse(value) }
+            @SuppressLint("TrustAllX509TrustManager")
+            override fun checkServerTrusted(
+                p0: Array<out X509Certificate>?,
+                p1: String?
+            ) {
+            }
+
+            override fun getAcceptedIssuers(): Array<X509Certificate>? = null
         }
     }
 
-    fun getFlow(url: String, time: Long): Flow<ApiState> = flow {
-        Log.d("ApiChecker: ", "start flow checking on $url")
-        while (true) {
-            delay(time)
-            emit(check(url))
-        }
-    }
-
-    private suspend fun check(url: String): ApiState {
+    suspend fun check(): ApiState {
         var result: ApiState
         Log.d("ApiChecker: ", "sending request...")
         try {
@@ -75,13 +74,9 @@ class ApiStateChecker(val context: Context) {
         return result
     }
 
-    fun isOnline(): Boolean {
+    private fun isOnline(): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         return connectivityManager.activeNetworkInfo?.isConnected == true
-    }
-
-    fun cleanScope() {
-        scope.cancel()
     }
 }

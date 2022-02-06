@@ -1,4 +1,4 @@
-package com.zoider.simpleapichecker.helpers
+package com.zoider.simpleapichecker.api
 
 import android.graphics.Color
 import com.zoider.simpleapichecker.R
