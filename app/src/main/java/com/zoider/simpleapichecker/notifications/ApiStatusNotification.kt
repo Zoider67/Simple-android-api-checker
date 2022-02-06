@@ -28,12 +28,10 @@ class ApiStatusNotification(val context: Context, val channelId: String) {
             .setSmallIcon(state.resIcon)
             .setColor(state.resColor)
             .setContentTitle(
-                context.getString(R.string.api_notification_status) +
-                        context.getString(state.resTitle)
+                "${context.getString(R.string.api_notification_status)} ${context.getString(state.resTitle)}"
             )
             .setContentText(
-                context.getString(R.string.api_notification_last_update) +
-                        "${LocalDateTime.now()}"
+                "${context.getString(R.string.api_notification_last_update)} ${LocalDateTime.now()}"
             )
             .setContentIntent(pendingIntent)
             .build()

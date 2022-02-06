@@ -1,6 +1,6 @@
 package com.zoider.simpleapichecker.schedulers
 
-interface IIntervalTask {
+interface Task {
 
-    fun execute()
+    suspend fun execute()
 }
