@@ -10,6 +10,7 @@ import com.zoider.simpleapichecker.api.CheckerHttpClient
 import com.zoider.simpleapichecker.views.activities.MainActivity
 import com.zoider.simpleapichecker.schedulers.IntervalExecutor
 import com.zoider.simpleapichecker.notifications.NotificationHelper
+import java.time.Duration
 
 class ApiCheckerService : Service() {
 
