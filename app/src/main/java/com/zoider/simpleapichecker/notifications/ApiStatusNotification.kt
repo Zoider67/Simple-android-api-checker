@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.zoider.simpleapichecker.R
-import com.zoider.simpleapichecker.views.activities.MainActivity
+import com.zoider.simpleapichecker.ui.MainActivity
 import com.zoider.simpleapichecker.api.ApiState
 import java.time.LocalDateTime
 

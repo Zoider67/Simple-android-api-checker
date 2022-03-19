@@ -2,13 +2,9 @@ package com.zoider.simpleapichecker.database
 
 import android.content.Context
 import android.util.Log
-import androidx.room.Query
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.internal.runner.junit4.AndroidJUnit4Builder
-import androidx.test.services.storage.internal.TestStorageUtil
-import com.zoider.simpleapichecker.database.query.ApiTesterRepository
 import com.zoider.simpleapichecker.database.query.HttpQuery
 import com.zoider.simpleapichecker.database.query.HttpQueryDao
 import kotlinx.coroutines.flow.first
@@ -20,15 +16,15 @@ import org.junit.runner.RunWith
 import java.io.IOException
 
 @RunWith(AndroidJUnit4::class)
-class ApiTesterDatabaseTest {
+class ApiCheckerDatabaseTest {
 
     private lateinit var httpQueryDao: HttpQueryDao
-    private lateinit var db: ApiTesterDatabase
+    private lateinit var db: ApiCheckerDatabase
 
     @Before
     fun createDb() = runBlocking {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        db = Room.inMemoryDatabaseBuilder(context, ApiTesterDatabase::class.java)
+        db = Room.inMemoryDatabaseBuilder(context, ApiCheckerDatabase::class.java)
             .addTypeConverter(HttpMethodConverter())
             .build()
         httpQueryDao = db.httpQueryDao()

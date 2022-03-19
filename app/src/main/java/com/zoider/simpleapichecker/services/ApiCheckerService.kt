@@ -7,10 +7,9 @@ import android.util.Log
 import android.widget.Toast
 import com.zoider.simpleapichecker.api.ApiCheckTask
 import com.zoider.simpleapichecker.api.CheckerHttpClient
-import com.zoider.simpleapichecker.views.activities.MainActivity
+import com.zoider.simpleapichecker.ui.MainActivity
 import com.zoider.simpleapichecker.schedulers.IntervalExecutor
 import com.zoider.simpleapichecker.notifications.NotificationHelper
-import java.time.Duration
 
 class ApiCheckerService : Service() {
 
