@@ -15,5 +15,10 @@
     <string name="hours">Hours</string>
     <string name="seconds">Seconds</string>
     <string name="queries">queries</string>
+    <string name="queries_title">HTTP Queries</string>
     <string name="tasks">tasks</string>
+    <string name="create_query">Create query</string>
+    <string name="new_http_query">New HTTP query</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
 </resources>

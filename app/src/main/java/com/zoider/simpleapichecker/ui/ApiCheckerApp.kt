@@ -12,7 +12,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.zoider.simpleapichecker.AppContainer
+import com.zoider.simpleapichecker.ui.query.CreateQueryScreen
 import com.zoider.simpleapichecker.ui.query.QueriesScreen
+import com.zoider.simpleapichecker.ui.query.QueryViewModel
 import com.zoider.simpleapichecker.ui.task.TasksScreen
 import com.zoider.simpleapichecker.ui.theme.ApiCheckerTheme
 
@@ -53,8 +56,22 @@ fun ApiCheckerApp() {
                 startDestination = Screen.Queries.route,
                 Modifier.padding(innerPadding)
             ) {
-                composable(Screen.Queries.route) { QueriesScreen() }
-                composable(Screen.Tasks.route) { TasksScreen() }
+                //TODO: navigation via viewmodel, or navigation manager
+                val queryViewModel = QueryViewModel(AppContainer.apiTesterRepository)
+                //TODO: common query screens state holder???
+                composable(Screen.Queries.route) {
+                    QueriesScreen(
+                        navController = navController,
+                        queryViewModel = queryViewModel
+                    )
+                }
+                composable(Screen.CreateQuery.route) {
+                    CreateQueryScreen(
+                        navController = navController,
+                        queryViewModel = queryViewModel
+                    )
+                }
+                composable(Screen.Tasks.route) { TasksScreen(navController = navController) }
             }
         }
     }
