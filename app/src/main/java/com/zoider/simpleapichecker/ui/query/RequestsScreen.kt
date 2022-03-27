@@ -15,45 +15,41 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.database.HttpMethod
-import com.zoider.simpleapichecker.database.query.HttpQuery
+import com.zoider.simpleapichecker.database.query.HttpRequest
 import com.zoider.simpleapichecker.ui.Screen
-import com.zoider.simpleapichecker.ui.components.Select
 
 @Composable
-fun QueriesScreen(navController: NavController, queryViewModel: QueryViewModel) {
-    val queries: List<HttpQuery> by queryViewModel.httpQueries.observeAsState(listOf())
-    QueriesScreenContent(
-        queries = queries,
+fun RequestsScreen(navController: NavController, requestViewModel: RequestViewModel) {
+    val requests: List<HttpRequest> by requestViewModel.httpRequests.observeAsState(listOf())
+    RequestsScreenContent(
+        requests = requests,
         onNewQueryClicked = { navController.navigate(Screen.CreateQuery.route) },
     )
 }
 
 @Composable
-fun QueriesScreenContent(onNewQueryClicked: () -> Unit, queries: List<HttpQuery>) {
+fun RequestsScreenContent(onNewQueryClicked: () -> Unit, requests: List<HttpRequest>) {
     Column() {
         TopAppBar(
-            title = { Text(stringResource(id = R.string.queries_title)) },
+            title = { Text(stringResource(id = R.string.requests_title)) },
             actions = {
                 IconButton(onClick = onNewQueryClicked) {
                     Icon(Icons.Filled.Add, contentDescription = "Add new query")
                 }
             }
         )
-        QueriesList(queries = queries)
-        Select<String>(values = listOf("One", "Two", "Three"), onSelect = { }) {
-            Text(text = it)
-        }
+        RequestsList(requests = requests)
     }
 }
 
 @Preview(name = "Queries screen content preview", showBackground = true)
 @Composable
-fun QueriesScreenContentPreview() {
-    QueriesScreenContent(
-        queries = listOf(
-            HttpQuery(method = HttpMethod.GET, url = "http://localhost/"),
-            HttpQuery(method = HttpMethod.GET, url = "http://google.com/"),
-            HttpQuery(method = HttpMethod.GET, url = "http://youtube.com/")
+fun RequestsScreenContentPreview() {
+    RequestsScreenContent(
+        requests = listOf(
+            HttpRequest(method = HttpMethod.GET, url = "http://localhost/"),
+            HttpRequest(method = HttpMethod.GET, url = "http://google.com/"),
+            HttpRequest(method = HttpMethod.GET, url = "http://youtube.com/")
         ),
         onNewQueryClicked = {}
     )

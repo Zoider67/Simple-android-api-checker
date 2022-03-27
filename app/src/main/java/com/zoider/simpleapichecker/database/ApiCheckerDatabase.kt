@@ -1,11 +1,11 @@
 package com.zoider.simpleapichecker.database
 
 import androidx.room.*
-import com.zoider.simpleapichecker.database.query.HttpQuery
-import com.zoider.simpleapichecker.database.query.HttpQueryDao
+import com.zoider.simpleapichecker.database.query.HttpRequest
+import com.zoider.simpleapichecker.database.query.HttpRequestDao
 
-@Database(entities = [HttpQuery::class], version = 1)
+@Database(entities = [HttpRequest::class], version = 1)
 @TypeConverters(HttpMethodConverter::class)
 abstract class ApiCheckerDatabase : RoomDatabase() {
-    abstract fun httpQueryDao(): HttpQueryDao
+    abstract fun httpQueryDao(): HttpRequestDao
 }

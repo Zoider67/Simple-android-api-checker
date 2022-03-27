@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.zoider.simpleapichecker.database.ApiCheckerDatabase
 import com.zoider.simpleapichecker.database.HttpMethodConverter
 import com.zoider.simpleapichecker.database.query.ApiTesterRepository
+import com.zoider.simpleapichecker.notifications.NotificationCenter
 
 
 /**

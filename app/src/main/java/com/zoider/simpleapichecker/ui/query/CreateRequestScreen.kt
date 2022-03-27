@@ -13,28 +13,33 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.database.HttpMethod
-import com.zoider.simpleapichecker.database.query.HttpQuery
+import com.zoider.simpleapichecker.database.query.HttpRequest
 import com.zoider.simpleapichecker.ui.Screen
 import com.zoider.simpleapichecker.ui.components.Select
 
 @Composable
-fun CreateQueryScreen(navController: NavController, queryViewModel: QueryViewModel) {
-    CreateQueryScreenContent(
+fun CreateRequestScreen(navController: NavController, requestViewModel: RequestViewModel) {
+    CreateRequestScreenContent(
         onBackPressed = { navController.navigate(Screen.Queries.route) },
-        onSavePressed = {
-                httpQuery -> queryViewModel.create(httpQuery)
-                navController.navigate(Screen.Queries.route)
+        onSavePressed = { httpQuery ->
+            requestViewModel.create(httpQuery)
+            navController.navigate(Screen.Queries.route)
+        },
+        onTestPressed = {
+            requestViewModel.executeRequest(it)
         }
     )
 }
 
 @Composable
-fun CreateQueryScreenContent(
+fun CreateRequestScreenContent(
     onBackPressed: () -> Unit,
-    onSavePressed: (httpQuery: HttpQuery) -> Unit
+    onSavePressed: (httpRequest: HttpRequest) -> Unit,
+    onTestPressed: (httpRequest: HttpRequest) -> Unit,
 ) {
     var httpMethod by remember { mutableStateOf(HttpMethod.GET) }
     var url by remember { mutableStateOf("") }
+
     Column() {
         TopAppBar(
             navigationIcon = {
@@ -42,7 +47,7 @@ fun CreateQueryScreenContent(
                     Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                 }
             },
-            title = { Text(stringResource(R.string.new_http_query)) }
+            title = { Text(stringResource(R.string.new_http_request)) }
         )
         Row(modifier = Modifier.padding(8.dp)) {
             Select(
@@ -55,16 +60,29 @@ fun CreateQueryScreenContent(
             TextField(value = url, onValueChange = { url = it })
         }
         Spacer(modifier = Modifier.weight(1f))
-        Button(
-            modifier = Modifier.padding(8.dp).align(alignment = Alignment.End),
-            onClick = { onSavePressed(HttpQuery(method = httpMethod, url = url)) }) {
-            Text(text = stringResource(R.string.save))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            TextButton(modifier = Modifier.padding(8.dp),
+                onClick = { onTestPressed(HttpRequest(method = httpMethod, url = url)) }) {
+                Text(text = stringResource(R.string.test))
+            }
+            Button(
+                modifier = Modifier.padding(8.dp),
+                onClick = { onSavePressed(HttpRequest(method = httpMethod, url = url)) }) {
+                Text(text = stringResource(R.string.save))
+            }
         }
     }
 }
 
-@Preview(name = "Create http query preview", showBackground = true)
+@Preview(name = "Create http request preview", showBackground = true)
 @Composable
-fun CreateQueryScreenPreview() {
-    CreateQueryScreenContent(onBackPressed = { }, onSavePressed = { })
+fun CreateRequestScreenPreview() {
+    CreateRequestScreenContent(
+        onBackPressed = { },
+        onSavePressed = { },
+        onTestPressed = { }
+    )
 }

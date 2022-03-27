@@ -10,7 +10,7 @@ import com.zoider.simpleapichecker.R
 
 sealed class Screen(val route: String, @StringRes val label: Int, val icon: ImageVector) {
     //TODO: make common class for storing routes
-    object Queries : Screen("queries", R.string.queries, Icons.Filled.Http)
-    object CreateQuery : Screen("create_query", R.string.create_query, Icons.Filled.Add)
+    object Queries : Screen("queries", R.string.requests_title, Icons.Filled.Http)
+    object CreateQuery : Screen("create_query", R.string.create_request, Icons.Filled.Add)
     object Tasks : Screen("tasks", R.string.tasks, Icons.Filled.Task)
 }

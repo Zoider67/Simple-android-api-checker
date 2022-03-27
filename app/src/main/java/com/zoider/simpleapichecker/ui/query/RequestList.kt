@@ -11,42 +11,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zoider.simpleapichecker.database.HttpMethod
-import com.zoider.simpleapichecker.database.query.HttpQuery
+import com.zoider.simpleapichecker.database.query.HttpRequest
 import com.zoider.simpleapichecker.ui.components.Chip
 
 @Composable
-fun QueriesList(queries: List<HttpQuery>) {
+fun RequestsList(requests: List<HttpRequest>) {
     LazyColumn() {
-        items(queries) { query ->
-            QueryListItem(query = query)
+        items(requests) { query ->
+            RequestListItem(request = query)
         }
     }
 }
 
 @Composable
-fun QueryListItem(query: HttpQuery) {
+fun RequestListItem(request: HttpRequest) {
     Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
         Chip(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
-            Text(query.method.name)
+            Text(request.method.name)
         }
-        Text(query.url)
+        Text(request.url)
     }
 }
 
 @Preview(name = "Query List Item", showBackground = true)
 @Composable
-fun QueryListItemPreview() {
-    QueryListItem(HttpQuery(method = HttpMethod.GET, url = "http://localhost/"))
+fun RequestListItemPreview() {
+    RequestListItem(HttpRequest(method = HttpMethod.GET, url = "http://localhost/"))
 }
 
 @Preview(name = "Queries List", showBackground = true)
 @Composable
-fun QueryListPreview() {
-    QueriesList(
+fun RequestListPreview() {
+    RequestsList(
         listOf(
-            HttpQuery(method = HttpMethod.GET, url = "http://localhost/"),
-            HttpQuery(method = HttpMethod.GET, url = "http://google.com/"),
-            HttpQuery(method = HttpMethod.GET, url = "http://youtube.com/")
+            HttpRequest(method = HttpMethod.GET, url = "http://localhost/"),
+            HttpRequest(method = HttpMethod.GET, url = "http://google.com/"),
+            HttpRequest(method = HttpMethod.GET, url = "http://youtube.com/")
         )
     )
 }

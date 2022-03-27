@@ -1,82 +1,32 @@
 package com.zoider.simpleapichecker.api
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.net.ConnectivityManager
 import android.util.Log
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import java.security.cert.X509Certificate
-import javax.net.ssl.X509TrustManager
+import com.zoider.simpleapichecker.database.query.HttpRequest
+import okhttp3.*
+import okhttp3.RequestBody.Companion.toRequestBody
+import ru.gildor.coroutines.okhttp.await
 
-class CheckerHttpClient(
-    private val context: Context,
-    private val url: String,
-    private val skipSSL: Boolean
-) {
+class CheckerHttpClient() {
 
-    private val httpClient: HttpClient = HttpClient(CIO) {
-        engine {
-            https {
-                if (skipSSL) {
-                    trustManager = buildSkipSSLTrustManager()
-                }
-            }
-        }
+    private val client = OkHttpClient()
+
+    private fun buildRequest(httpRequest: HttpRequest): Request {
+        val requestBody = "".toRequestBody(null)
+        //TODO: validate url
+        val request = Request.Builder()
+            .url(httpRequest.url)
+            .method(httpRequest.method.name, requestBody)
+            .build()
+        return request
     }
 
-    @SuppressLint("CustomX509TrustManager")
-    private fun buildSkipSSLTrustManager(): X509TrustManager {
-        return object : X509TrustManager {
-            @SuppressLint("TrustAllX509TrustManager")
-            override fun checkClientTrusted(
-                p0: Array<out X509Certificate>?,
-                p1: String?
-            ) {
-            }
-
-            @SuppressLint("TrustAllX509TrustManager")
-            override fun checkServerTrusted(
-                p0: Array<out X509Certificate>?,
-                p1: String?
-            ) {
-            }
-
-            override fun getAcceptedIssuers(): Array<X509Certificate>? = null
-        }
-    }
-
-    suspend fun check(): ApiState {
-        var result: ApiState
-        Log.d("ApiChecker: ", "sending request...")
-        try {
-            result = if (isOnline()) {
-                val httpResponse: HttpResponse = httpClient.get(url)
-                val body: String = httpResponse.receive()
-                val status = httpResponse.status
-                Log.d("ApiChecker: ", "http response status is $status")
-                Log.d("ApiChecker: ", "http response body is $body")
-                ApiState.ONLINE
-            } else {
-                ApiState.NO_NETWORK
-            }
-        } catch (c: ResponseException) {
-            Log.e("ApiStateChecker err: ", c.toString())
-            result = ApiState.SERVER_IS_NOT_AVAILABLE
-        } catch (t: Throwable) {
-            Log.e("ApiStateChecker err: ", t.toString())
-            result = ApiState.SERVER_IS_NOT_AVAILABLE
-        }
-        return result
-    }
-
-    private fun isOnline(): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        return connectivityManager.activeNetworkInfo?.isConnected == true
+    suspend fun executeRequest(httpRequest: HttpRequest): ApiCheckResult {
+        val request = buildRequest(httpRequest)
+        val response = client.newCall(request).await()
+        Log.d("ExecuteRequestUseCase", "http response ${response.body.toString()}")
+        return ApiCheckResult(
+            if (response.isSuccessful) ApiState.SUCCESS else ApiState.ERROR,
+            response.body.toString()
+        )
     }
 }

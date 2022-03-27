@@ -7,13 +7,13 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface HttpQueryDao {
+interface HttpRequestDao {
     @Insert
-    suspend fun insert(query: HttpQuery): Long
+    suspend fun insert(request: HttpRequest): Long
 
     @Delete
-    fun delete(query: HttpQuery)
+    fun delete(request: HttpRequest)
 
-    @Query("SELECT * FROM HttpQuery")
-    fun getAll(): Flow<List<HttpQuery>>
+    @Query("SELECT * FROM HttpRequest")
+    fun getAll(): Flow<List<HttpRequest>>
 }

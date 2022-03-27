@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.zoider.simpleapichecker.database.query.HttpQuery
-import com.zoider.simpleapichecker.database.query.HttpQueryDao
+import com.zoider.simpleapichecker.database.query.HttpRequest
+import com.zoider.simpleapichecker.database.query.HttpRequestDao
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -18,7 +18,7 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class ApiCheckerDatabaseTest {
 
-    private lateinit var httpQueryDao: HttpQueryDao
+    private lateinit var httpRequestDao: HttpRequestDao
     private lateinit var db: ApiCheckerDatabase
 
     @Before
@@ -27,7 +27,7 @@ class ApiCheckerDatabaseTest {
         db = Room.inMemoryDatabaseBuilder(context, ApiCheckerDatabase::class.java)
             .addTypeConverter(HttpMethodConverter())
             .build()
-        httpQueryDao = db.httpQueryDao()
+        httpRequestDao = db.httpQueryDao()
     }
 
     @After
@@ -38,16 +38,16 @@ class ApiCheckerDatabaseTest {
 
     @Test
     fun httpQueriesDaoTest() = runBlocking {
-        val query1 = HttpQuery(method = HttpMethod.GET, url = "test1")
-        val id1 = httpQueryDao.insert(query1)
+        val query1 = HttpRequest(method = HttpMethod.GET, url = "test1")
+        val id1 = httpRequestDao.insert(query1)
         Log.d("insertHttpQuery", "id of inserted http query: $id1")
-        val query2 = HttpQuery(method = HttpMethod.GET, url = "test2")
-        val id2 = httpQueryDao.insert(query2)
+        val query2 = HttpRequest(method = HttpMethod.GET, url = "test2")
+        val id2 = httpRequestDao.insert(query2)
         Log.d("insertHttpQuery", "id of inserted http query: $id2")
-        var queries = httpQueryDao.getAll().first()
+        var queries = httpRequestDao.getAll().first()
         assert(queries.size == 2)
-        queries.forEach { httpQueryDao.delete(it) }
-        queries = httpQueryDao.getAll().first()
+        queries.forEach { httpRequestDao.delete(it) }
+        queries = httpRequestDao.getAll().first()
         assert(queries.isEmpty())
     }
 }

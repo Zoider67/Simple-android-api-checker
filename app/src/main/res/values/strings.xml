@@ -14,11 +14,12 @@
     <string name="minutes">Minutes</string>
     <string name="hours">Hours</string>
     <string name="seconds">Seconds</string>
-    <string name="queries">queries</string>
-    <string name="queries_title">HTTP Queries</string>
+    <string name="request">requests</string>
+    <string name="requests_title">HTTP Requests</string>
     <string name="tasks">tasks</string>
-    <string name="create_query">Create query</string>
-    <string name="new_http_query">New HTTP query</string>
+    <string name="create_request">Create request</string>
+    <string name="new_http_request">New HTTP request</string>
     <string name="back">Back</string>
     <string name="save">Save</string>
+    <string name="test">test</string>
 </resources>

@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.zoider.simpleapichecker.database.HttpMethod
 
 @Entity
-data class HttpQuery(
+data class HttpRequest(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val method: HttpMethod,

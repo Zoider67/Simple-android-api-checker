@@ -22,7 +22,6 @@ fun <T> Select(
     onSelect: (T) -> Unit,
     valueSlot: @Composable (value: T) -> Unit,
 ) {
-    //var expanded by remember { mutableStateOf(false) }
     val (selectState, setSelectState) = remember {
         mutableStateOf(
             SelectState<T>(
@@ -31,29 +30,30 @@ fun <T> Select(
             )
         )
     }
-//    Box(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .wrapContentSize(Alignment.TopStart)
-//    ) {
-        Button(modifier = modifier, onClick = {
-            setSelectState(SelectState(expanded = true, selectedItem = selectState.selectedItem))
+    Button(modifier = modifier, onClick = {
+        setSelectState(SelectState(expanded = true, selectedItem = selectState.selectedItem))
+    }) {
+        valueSlot(selectState.selectedItem)
+    }
+    DropdownMenu(
+        expanded = selectState.expanded,
+        onDismissRequest = {
+            setSelectState(
+                SelectState(
+                    expanded = false,
+                    selectedItem = selectState.selectedItem
+                )
+            )
         }) {
-            valueSlot(selectState.selectedItem)
-        }
-        DropdownMenu(
-            expanded = selectState.expanded,
-            onDismissRequest = { setSelectState(SelectState(expanded = false, selectedItem = selectState.selectedItem)) }) {
-            values.forEach {
-                DropdownMenuItem(onClick = {
-                    setSelectState(SelectState(expanded = false, selectedItem = it))
-                    onSelect(it)
-                }) {
-                    valueSlot(it)
-                }
+        values.forEach {
+            DropdownMenuItem(onClick = {
+                setSelectState(SelectState(expanded = false, selectedItem = it))
+                onSelect(it)
+            }) {
+                valueSlot(it)
             }
         }
-//    }
+    }
 }
 
 @Preview(name = "Select component preview", showBackground = true)

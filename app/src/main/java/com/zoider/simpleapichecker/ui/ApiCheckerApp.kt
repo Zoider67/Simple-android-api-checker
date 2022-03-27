@@ -5,17 +5,19 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.zoider.simpleapichecker.AppContainer
-import com.zoider.simpleapichecker.ui.query.CreateQueryScreen
-import com.zoider.simpleapichecker.ui.query.QueriesScreen
-import com.zoider.simpleapichecker.ui.query.QueryViewModel
+import com.zoider.simpleapichecker.domain.ExecuteRequestUseCase
+import com.zoider.simpleapichecker.notifications.NotificationCenter
+import com.zoider.simpleapichecker.ui.query.CreateRequestScreen
+import com.zoider.simpleapichecker.ui.query.RequestsScreen
+import com.zoider.simpleapichecker.ui.query.RequestViewModel
 import com.zoider.simpleapichecker.ui.task.TasksScreen
 import com.zoider.simpleapichecker.ui.theme.ApiCheckerTheme
 
@@ -24,6 +26,8 @@ fun ApiCheckerApp() {
     ApiCheckerTheme {
         val navItems = listOf(Screen.Queries, Screen.Tasks)
         val navController = rememberNavController()
+        //TODO: move to DI container!!!
+        val notificationCenter = NotificationCenter(LocalContext.current)
         Scaffold(
             bottomBar = {
                 BottomNavigation {
@@ -57,18 +61,21 @@ fun ApiCheckerApp() {
                 Modifier.padding(innerPadding)
             ) {
                 //TODO: navigation via viewmodel, or navigation manager
-                val queryViewModel = QueryViewModel(AppContainer.apiTesterRepository)
+                val queryViewModel = RequestViewModel(
+                    AppContainer.apiTesterRepository,
+                    ExecuteRequestUseCase(notificationCenter = notificationCenter)
+                )
                 //TODO: common query screens state holder???
                 composable(Screen.Queries.route) {
-                    QueriesScreen(
+                    RequestsScreen(
                         navController = navController,
-                        queryViewModel = queryViewModel
+                        requestViewModel = queryViewModel
                     )
                 }
                 composable(Screen.CreateQuery.route) {
-                    CreateQueryScreen(
+                    CreateRequestScreen(
                         navController = navController,
-                        queryViewModel = queryViewModel
+                        requestViewModel = queryViewModel
                     )
                 }
                 composable(Screen.Tasks.route) { TasksScreen(navController = navController) }
