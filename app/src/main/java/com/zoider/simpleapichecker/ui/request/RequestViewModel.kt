@@ -1,6 +1,5 @@
-package com.zoider.simpleapichecker.ui.query
+package com.zoider.simpleapichecker.ui.request
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.zoider.simpleapichecker.ExceptionHandler
 import com.zoider.simpleapichecker.database.query.ApiTesterRepository

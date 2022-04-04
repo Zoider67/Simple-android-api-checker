@@ -1,4 +1,4 @@
-package com.zoider.simpleapichecker.ui.query
+package com.zoider.simpleapichecker.ui.request
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding

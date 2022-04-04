@@ -15,9 +15,9 @@ import androidx.navigation.compose.rememberNavController
 import com.zoider.simpleapichecker.AppContainer
 import com.zoider.simpleapichecker.domain.ExecuteRequestUseCase
 import com.zoider.simpleapichecker.notifications.NotificationCenter
-import com.zoider.simpleapichecker.ui.query.CreateRequestScreen
-import com.zoider.simpleapichecker.ui.query.RequestsScreen
-import com.zoider.simpleapichecker.ui.query.RequestViewModel
+import com.zoider.simpleapichecker.ui.request.CreateRequestScreen
+import com.zoider.simpleapichecker.ui.request.RequestsScreen
+import com.zoider.simpleapichecker.ui.request.RequestViewModel
 import com.zoider.simpleapichecker.ui.task.TasksScreen
 import com.zoider.simpleapichecker.ui.theme.ApiCheckerTheme
 

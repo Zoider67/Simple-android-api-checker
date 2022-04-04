@@ -1,13 +1,20 @@
-package com.zoider.simpleapichecker.ui.query
+package com.zoider.simpleapichecker.ui.request
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -16,6 +23,8 @@ import com.zoider.simpleapichecker.database.HttpMethod
 import com.zoider.simpleapichecker.database.query.HttpRequest
 import com.zoider.simpleapichecker.ui.Screen
 import com.zoider.simpleapichecker.ui.components.Select
+import com.zoider.simpleapichecker.ui.components.form.CustomTextField
+import com.zoider.simpleapichecker.ui.components.form.UrlValidationState
 
 @Composable
 fun CreateRequestScreen(navController: NavController, requestViewModel: RequestViewModel) {
@@ -37,8 +46,11 @@ fun CreateRequestScreenContent(
     onSavePressed: (httpRequest: HttpRequest) -> Unit,
     onTestPressed: (httpRequest: HttpRequest) -> Unit,
 ) {
+    val context = LocalContext.current
     var httpMethod by remember { mutableStateOf(HttpMethod.GET) }
-    var url by remember { mutableStateOf("") }
+    val urlState = remember { UrlValidationState(context) }
+    val urlFocusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     Column() {
         TopAppBar(
@@ -57,7 +69,12 @@ fun CreateRequestScreenContent(
             ) {
                 Text(it.name)
             }
-            TextField(value = url, onValueChange = { url = it })
+            CustomTextField(
+                modifier = Modifier.focusRequester(urlFocusRequester),
+                validationState = urlState,
+                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() })
+            )
         }
         Spacer(modifier = Modifier.weight(1f))
         Row(
@@ -65,12 +82,26 @@ fun CreateRequestScreenContent(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             TextButton(modifier = Modifier.padding(8.dp),
-                onClick = { onTestPressed(HttpRequest(method = httpMethod, url = url)) }) {
+                onClick = {
+                    onTestPressed(
+                        HttpRequest(
+                            method = httpMethod,
+                            url = urlState.text
+                        )
+                    )
+                }) {
                 Text(text = stringResource(R.string.test))
             }
             Button(
                 modifier = Modifier.padding(8.dp),
-                onClick = { onSavePressed(HttpRequest(method = httpMethod, url = url)) }) {
+                onClick = {
+                    onSavePressed(
+                        HttpRequest(
+                            method = httpMethod,
+                            url = urlState.text
+                        )
+                    )
+                }) {
                 Text(text = stringResource(R.string.save))
             }
         }

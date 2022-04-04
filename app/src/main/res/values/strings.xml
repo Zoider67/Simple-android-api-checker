@@ -22,4 +22,6 @@
     <string name="back">Back</string>
     <string name="save">Save</string>
     <string name="test">test</string>
+    <string name="error">Error</string>
+    <string name="invalid_url">Invalid url</string>
 </resources>
