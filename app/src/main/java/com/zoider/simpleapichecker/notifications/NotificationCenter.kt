@@ -7,7 +7,7 @@ import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
 import com.zoider.simpleapichecker.api.ApiState
 
-class NotificationHelper(val context: Context) {
+class NotificationCenter(val context: Context) {
 
     companion object {
         private const val DEFAULT_CHANNEL_ID = "0"
@@ -43,7 +43,7 @@ class NotificationHelper(val context: Context) {
     }
 
     fun getApiStatusNotification(): Notification {
-        return ApiStatusNotification(context, DEFAULT_CHANNEL_ID).build(ApiState.ONLINE)
+        return ApiStatusNotification(context, DEFAULT_CHANNEL_ID).build(ApiState.SUCCESS)
     }
 
     fun showApiStateNotification(state: ApiState) {

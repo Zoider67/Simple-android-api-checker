@@ -1,18 +1,25 @@
 package com.zoider.simpleapichecker.database.query
 
 import androidx.annotation.WorkerThread
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import java.util.concurrent.Flow
 
-class ApiTesterRepository(private val queryDao: HttpQueryDao) {
+class ApiTesterRepository(private val requestDao: HttpRequestDao) {
+
+    val allHttpRequests: Flow<List<HttpRequest>> = requestDao.getAll()
 
     @WorkerThread
-    suspend fun createQuery(httpQuery: HttpQuery): Long{
-        return queryDao.insert(httpQuery)
+    suspend fun createRequest(httpRequest: HttpRequest): Long{
+        return requestDao.insert(httpRequest)
     }
 
     @WorkerThread
-    suspend fun getAllHttpQueries(): List<HttpQuery>{
-        return queryDao.getAll().first()
+    suspend fun getAllHttpRequests(): List<HttpRequest>{
+        return requestDao.getAll().first()
+    }
+
+    @WorkerThread
+    suspend fun getRequestById(id: Int): HttpRequest{
+        return requestDao.getById(id).first()
     }
 }
