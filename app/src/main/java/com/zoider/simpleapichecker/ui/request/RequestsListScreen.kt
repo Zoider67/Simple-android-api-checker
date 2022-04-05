@@ -19,38 +19,47 @@ import com.zoider.simpleapichecker.database.query.HttpRequest
 import com.zoider.simpleapichecker.ui.Screen
 
 @Composable
-fun RequestsScreen(navController: NavController, requestViewModel: RequestViewModel) {
+fun RequestsListScreen(navController: NavController, requestViewModel: RequestViewModel) {
     val requests: List<HttpRequest> by requestViewModel.httpRequests.observeAsState(listOf())
-    RequestsScreenContent(
+    RequestsListScreenContent(
         requests = requests,
-        onNewQueryClicked = { navController.navigate(Screen.CreateQuery.route) },
+        onNewRequestClicked = { navController.navigate(Screen.CreateRequest.route) },
+        onSelectRequest = {
+            requestViewModel.select(it)
+            navController.navigate(Screen.Request.route)
+        }
     )
 }
 
 @Composable
-fun RequestsScreenContent(onNewQueryClicked: () -> Unit, requests: List<HttpRequest>) {
+fun RequestsListScreenContent(
+    onNewRequestClicked: () -> Unit,
+    onSelectRequest: (id: Int) -> Unit,
+    requests: List<HttpRequest>
+) {
     Column() {
         TopAppBar(
             title = { Text(stringResource(id = R.string.requests_title)) },
             actions = {
-                IconButton(onClick = onNewQueryClicked) {
+                IconButton(onClick = onNewRequestClicked) {
                     Icon(Icons.Filled.Add, contentDescription = "Add new query")
                 }
             }
         )
-        RequestsList(requests = requests)
+        RequestsList(requests = requests, onSelect = onSelectRequest)
     }
 }
 
 @Preview(name = "Queries screen content preview", showBackground = true)
 @Composable
 fun RequestsScreenContentPreview() {
-    RequestsScreenContent(
+    RequestsListScreenContent(
         requests = listOf(
             HttpRequest(method = HttpMethod.GET, url = "http://localhost/"),
             HttpRequest(method = HttpMethod.GET, url = "http://google.com/"),
             HttpRequest(method = HttpMethod.GET, url = "http://youtube.com/")
         ),
-        onNewQueryClicked = {}
+        onNewRequestClicked = {},
+        onSelectRequest = {}
     )
 }

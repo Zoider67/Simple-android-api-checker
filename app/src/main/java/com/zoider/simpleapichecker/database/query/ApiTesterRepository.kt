@@ -14,7 +14,12 @@ class ApiTesterRepository(private val requestDao: HttpRequestDao) {
     }
 
     @WorkerThread
-    suspend fun getAllHttpQueries(): List<HttpRequest>{
+    suspend fun getAllHttpRequests(): List<HttpRequest>{
         return requestDao.getAll().first()
+    }
+
+    @WorkerThread
+    suspend fun getRequestById(id: Int): HttpRequest{
+        return requestDao.getById(id).first()
     }
 }

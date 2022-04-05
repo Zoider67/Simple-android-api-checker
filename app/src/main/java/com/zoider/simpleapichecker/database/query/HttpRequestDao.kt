@@ -16,4 +16,7 @@ interface HttpRequestDao {
 
     @Query("SELECT * FROM HttpRequest")
     fun getAll(): Flow<List<HttpRequest>>
+
+    @Query("SELECT * FROM HttpRequest WHERE id=:id")
+    fun getById(id: Int): Flow<HttpRequest>
 }

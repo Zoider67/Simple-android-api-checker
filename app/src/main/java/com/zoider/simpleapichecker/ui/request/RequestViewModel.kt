@@ -13,6 +13,7 @@ class RequestViewModel(
 ) : ViewModel() {
 
     val httpRequests: LiveData<List<HttpRequest>> = apiTesterRepository.allHttpRequests.asLiveData()
+    val selectedHttpRequest = MutableLiveData<HttpRequest>()
 
     fun create(request: HttpRequest) = viewModelScope.launch {
         apiTesterRepository.createRequest(request)
@@ -22,4 +23,8 @@ class RequestViewModel(
         viewModelScope.launch(ExceptionHandler.coroutineExceptionHandler) {
             executeRequestUseCase(httpRequest)
         }
+
+    fun select(id: Int) = viewModelScope.launch(ExceptionHandler.coroutineExceptionHandler) {
+        selectedHttpRequest.value = apiTesterRepository.getRequestById(id)
+    }
 }

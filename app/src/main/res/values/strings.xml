@@ -24,4 +24,5 @@
     <string name="test">test</string>
     <string name="error">Error</string>
     <string name="invalid_url">Invalid url</string>
+    <string name="request_screen">Request</string>
 </resources>

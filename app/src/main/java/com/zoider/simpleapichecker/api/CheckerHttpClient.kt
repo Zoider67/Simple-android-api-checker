@@ -1,6 +1,7 @@
 package com.zoider.simpleapichecker.api
 
 import android.util.Log
+import com.zoider.simpleapichecker.database.HttpMethod
 import com.zoider.simpleapichecker.database.query.HttpRequest
 import okhttp3.*
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -11,11 +12,9 @@ class CheckerHttpClient() {
     private val client = OkHttpClient()
 
     private fun buildRequest(httpRequest: HttpRequest): Request {
-        val requestBody = "".toRequestBody(null)
-        //TODO: validate url
         val request = Request.Builder()
             .url(httpRequest.url)
-            .method(httpRequest.method.name, requestBody)
+            .method(httpRequest.method.name, null)
             .build()
         return request
     }

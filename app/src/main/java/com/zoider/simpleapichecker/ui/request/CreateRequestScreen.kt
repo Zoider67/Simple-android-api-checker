@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
@@ -29,10 +28,10 @@ import com.zoider.simpleapichecker.ui.components.form.UrlValidationState
 @Composable
 fun CreateRequestScreen(navController: NavController, requestViewModel: RequestViewModel) {
     CreateRequestScreenContent(
-        onBackPressed = { navController.navigate(Screen.Queries.route) },
+        onBackPressed = { navController.navigate(Screen.RequestsList.route) },
         onSavePressed = { httpQuery ->
             requestViewModel.create(httpQuery)
-            navController.navigate(Screen.Queries.route)
+            navController.navigate(Screen.RequestsList.route)
         },
         onTestPressed = {
             requestViewModel.executeRequest(it)

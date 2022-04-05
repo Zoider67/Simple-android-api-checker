@@ -1,5 +1,6 @@
 package com.zoider.simpleapichecker.ui.request
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,17 +16,22 @@ import com.zoider.simpleapichecker.database.query.HttpRequest
 import com.zoider.simpleapichecker.ui.components.Chip
 
 @Composable
-fun RequestsList(requests: List<HttpRequest>) {
+fun RequestsList(requests: List<HttpRequest>, onSelect: (id: Int) -> Unit = {}) {
     LazyColumn() {
         items(requests) { query ->
-            RequestListItem(request = query)
+            RequestListItem(request = query, onSelect = onSelect)
         }
     }
 }
 
 @Composable
-fun RequestListItem(request: HttpRequest) {
-    Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+fun RequestListItem(request: HttpRequest, onSelect: (id: Int) -> Unit = {}) {
+    Row(
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onSelect(request.id) },
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Chip(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
             Text(request.method.name)
         }
@@ -47,6 +53,6 @@ fun RequestListPreview() {
             HttpRequest(method = HttpMethod.GET, url = "http://localhost/"),
             HttpRequest(method = HttpMethod.GET, url = "http://google.com/"),
             HttpRequest(method = HttpMethod.GET, url = "http://youtube.com/")
-        )
+        ),
     )
 }
