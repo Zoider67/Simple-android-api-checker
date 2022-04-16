@@ -14,7 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
-import com.zoider.simpleapichecker.database.HttpMethod
+import com.zoider.simpleapichecker.commons.HttpMethod
 import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 import com.zoider.simpleapichecker.ui.Screen
 

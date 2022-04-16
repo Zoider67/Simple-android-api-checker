@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.zoider.simpleapichecker.database.HttpMethod
+import com.zoider.simpleapichecker.commons.HttpMethod
 import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 import com.zoider.simpleapichecker.ui.components.Chip
 

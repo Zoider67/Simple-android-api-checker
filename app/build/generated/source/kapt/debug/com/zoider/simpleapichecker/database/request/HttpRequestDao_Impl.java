@@ -9,7 +9,7 @@ import androidx.room.RoomSQLiteQuery;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
-import com.zoider.simpleapichecker.database.HttpMethod;
+import com.zoider.simpleapichecker.commons.HttpMethod;
 import com.zoider.simpleapichecker.database.HttpMethodConverter;
 import java.lang.Class;
 import java.lang.Exception;

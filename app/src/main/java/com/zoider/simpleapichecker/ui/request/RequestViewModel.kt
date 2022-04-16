@@ -21,7 +21,9 @@ class RequestViewModel(
 
     fun executeRequest(httpRequestEntity: HttpRequestEntity) =
         viewModelScope.launch(ExceptionHandler.coroutineExceptionHandler) {
-            executeRequestUseCase(httpRequestEntity)
+            executeRequestUseCase(httpRequestEntity.url, httpRequestEntity.method) {
+                //TODO: show notification
+            }
         }
 
     fun select(id: Int) = viewModelScope.launch(ExceptionHandler.coroutineExceptionHandler) {

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.zoider.simpleapichecker.commons.HttpMethod
 import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 import com.zoider.simpleapichecker.database.request.HttpRequestDao
 import kotlinx.coroutines.flow.first

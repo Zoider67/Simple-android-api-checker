@@ -1,4 +1,4 @@
-package com.zoider.simpleapichecker.database
+package com.zoider.simpleapichecker.commons
 
 enum class HttpMethod(value: Int) {
     GET(0),

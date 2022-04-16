@@ -1,4 +1,4 @@
-package com.zoider.simpleapichecker.http
+package com.zoider.simpleapichecker.apichecker
 
 //class ApiCheckTask(val httpClient: CheckerHttpClient, val onCheck: (ApiState) -> Unit) : Task {
 //

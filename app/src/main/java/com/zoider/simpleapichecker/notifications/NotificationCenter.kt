@@ -5,7 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
-import com.zoider.simpleapichecker.http.ApiState
+import com.zoider.simpleapichecker.ui.consts.UIApiState
 
 class NotificationCenter(val context: Context) {
 
@@ -43,11 +43,11 @@ class NotificationCenter(val context: Context) {
     }
 
     fun getApiStatusNotification(): Notification {
-        return ApiStatusNotification(context, DEFAULT_CHANNEL_ID).build(ApiState.SUCCESS)
+        return ApiStatusNotification(context, DEFAULT_CHANNEL_ID).build(UIApiState.SUCCESS)
     }
 
-    fun showApiStateNotification(state: ApiState) {
-        val notification = ApiStatusNotification(context, DEFAULT_CHANNEL_ID).build(state)
+    fun showApiStateNotification(stateUI: UIApiState) {
+        val notification = ApiStatusNotification(context, DEFAULT_CHANNEL_ID).build(stateUI)
         notificationManager.notify(API_STATE_NOTIFICATION_ID, notification)
     }
 }

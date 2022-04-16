@@ -1,9 +1,9 @@
-package com.zoider.simpleapichecker.http
+package com.zoider.simpleapichecker.ui.consts
 
 import android.graphics.Color
 import com.zoider.simpleapichecker.R
 
-enum class ApiState(val resTitle: Int, val resIcon: Int, val resColor: Int) {
+enum class UIApiState(val resTitle: Int, val resIcon: Int, val resColor: Int) {
     SUCCESS(
         R.string.api_state_online,
         R.drawable.baseline_check_circle_black_36,

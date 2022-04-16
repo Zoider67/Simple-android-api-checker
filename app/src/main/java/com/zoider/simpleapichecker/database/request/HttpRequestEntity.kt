@@ -2,7 +2,7 @@ package com.zoider.simpleapichecker.database.request
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.zoider.simpleapichecker.database.HttpMethod
+import com.zoider.simpleapichecker.commons.HttpMethod
 
 @Entity
 data class HttpRequestEntity(
