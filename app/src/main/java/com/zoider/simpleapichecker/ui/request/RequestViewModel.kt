@@ -2,8 +2,8 @@ package com.zoider.simpleapichecker.ui.request
 
 import androidx.lifecycle.*
 import com.zoider.simpleapichecker.ExceptionHandler
-import com.zoider.simpleapichecker.database.query.ApiTesterRepository
-import com.zoider.simpleapichecker.database.query.HttpRequest
+import com.zoider.simpleapichecker.database.request.ApiTesterRepository
+import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 import com.zoider.simpleapichecker.domain.ExecuteRequestUseCase
 import kotlinx.coroutines.launch
 
@@ -12,16 +12,16 @@ class RequestViewModel(
     private val executeRequestUseCase: ExecuteRequestUseCase
 ) : ViewModel() {
 
-    val httpRequests: LiveData<List<HttpRequest>> = apiTesterRepository.allHttpRequests.asLiveData()
-    val selectedHttpRequest = MutableLiveData<HttpRequest>()
+    val httpRequestsEntity: LiveData<List<HttpRequestEntity>> = apiTesterRepository.allHttpRequestsEntity.asLiveData()
+    val selectedHttpRequest = MutableLiveData<HttpRequestEntity>()
 
-    fun create(request: HttpRequest) = viewModelScope.launch {
-        apiTesterRepository.createRequest(request)
+    fun create(requestEntity: HttpRequestEntity) = viewModelScope.launch {
+        apiTesterRepository.createRequest(requestEntity)
     }
 
-    fun executeRequest(httpRequest: HttpRequest) =
+    fun executeRequest(httpRequestEntity: HttpRequestEntity) =
         viewModelScope.launch(ExceptionHandler.coroutineExceptionHandler) {
-            executeRequestUseCase(httpRequest)
+            executeRequestUseCase(httpRequestEntity)
         }
 
     fun select(id: Int) = viewModelScope.launch(ExceptionHandler.coroutineExceptionHandler) {

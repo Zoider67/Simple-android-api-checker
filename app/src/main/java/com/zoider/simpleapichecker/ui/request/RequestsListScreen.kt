@@ -15,14 +15,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.database.HttpMethod
-import com.zoider.simpleapichecker.database.query.HttpRequest
+import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 import com.zoider.simpleapichecker.ui.Screen
 
 @Composable
 fun RequestsListScreen(navController: NavController, requestViewModel: RequestViewModel) {
-    val requests: List<HttpRequest> by requestViewModel.httpRequests.observeAsState(listOf())
+    val requestEntities: List<HttpRequestEntity> by requestViewModel.httpRequestsEntity.observeAsState(listOf())
     RequestsListScreenContent(
-        requests = requests,
+        requestEntities = requestEntities,
         onNewRequestClicked = { navController.navigate(Screen.CreateRequest.route) },
         onSelectRequest = {
             requestViewModel.select(it)
@@ -35,7 +35,7 @@ fun RequestsListScreen(navController: NavController, requestViewModel: RequestVi
 fun RequestsListScreenContent(
     onNewRequestClicked: () -> Unit,
     onSelectRequest: (id: Int) -> Unit,
-    requests: List<HttpRequest>
+    requestEntities: List<HttpRequestEntity>
 ) {
     Column() {
         TopAppBar(
@@ -46,7 +46,7 @@ fun RequestsListScreenContent(
                 }
             }
         )
-        RequestsList(requests = requests, onSelect = onSelectRequest)
+        RequestsList(requestEntities = requestEntities, onSelect = onSelectRequest)
     }
 }
 
@@ -54,10 +54,10 @@ fun RequestsListScreenContent(
 @Composable
 fun RequestsScreenContentPreview() {
     RequestsListScreenContent(
-        requests = listOf(
-            HttpRequest(method = HttpMethod.GET, url = "http://localhost/"),
-            HttpRequest(method = HttpMethod.GET, url = "http://google.com/"),
-            HttpRequest(method = HttpMethod.GET, url = "http://youtube.com/")
+        requestEntities = listOf(
+            HttpRequestEntity(method = HttpMethod.GET, url = "http://localhost/"),
+            HttpRequestEntity(method = HttpMethod.GET, url = "http://google.com/"),
+            HttpRequestEntity(method = HttpMethod.GET, url = "http://youtube.com/")
         ),
         onNewRequestClicked = {},
         onSelectRequest = {}

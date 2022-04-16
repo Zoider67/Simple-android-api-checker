@@ -7,7 +7,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.ui.MainActivity
-import com.zoider.simpleapichecker.api.ApiState
+import com.zoider.simpleapichecker.http.ApiState
 import java.time.LocalDateTime
 
 class ApiStatusNotification(val context: Context, val channelId: String) {

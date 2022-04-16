@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.database.HttpMethod
-import com.zoider.simpleapichecker.database.query.HttpRequest
+import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 import com.zoider.simpleapichecker.ui.Screen
 import com.zoider.simpleapichecker.ui.components.Select
 import com.zoider.simpleapichecker.ui.components.form.CustomTextField
@@ -42,8 +42,8 @@ fun CreateRequestScreen(navController: NavController, requestViewModel: RequestV
 @Composable
 fun CreateRequestScreenContent(
     onBackPressed: () -> Unit,
-    onSavePressed: (httpRequest: HttpRequest) -> Unit,
-    onTestPressed: (httpRequest: HttpRequest) -> Unit,
+    onSavePressed: (httpRequestEntity: HttpRequestEntity) -> Unit,
+    onTestPressed: (httpRequestEntity: HttpRequestEntity) -> Unit,
 ) {
     val context = LocalContext.current
     var httpMethod by remember { mutableStateOf(HttpMethod.GET) }
@@ -83,7 +83,7 @@ fun CreateRequestScreenContent(
             TextButton(modifier = Modifier.padding(8.dp),
                 onClick = {
                     onTestPressed(
-                        HttpRequest(
+                        HttpRequestEntity(
                             method = httpMethod,
                             url = urlState.text
                         )
@@ -95,7 +95,7 @@ fun CreateRequestScreenContent(
                 modifier = Modifier.padding(8.dp),
                 onClick = {
                     onSavePressed(
-                        HttpRequest(
+                        HttpRequestEntity(
                             method = httpMethod,
                             url = urlState.text
                         )

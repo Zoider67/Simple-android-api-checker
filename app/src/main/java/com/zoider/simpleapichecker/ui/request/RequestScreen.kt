@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.database.HttpMethod
-import com.zoider.simpleapichecker.database.query.HttpRequest
+import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 
 @Composable
 fun RequestScreen(
@@ -25,7 +24,7 @@ fun RequestScreen(
     val httpRequest by requestViewModel.selectedHttpRequest.observeAsState()
     httpRequest?.let {
         RequestScreenContent(
-            httpRequest = it,
+            httpRequestEntity = it,
             onBackPressed = { navController.popBackStack() },
             onTestPressed = { requestViewModel.executeRequest(it) }
         )
@@ -34,9 +33,9 @@ fun RequestScreen(
 
 @Composable
 fun RequestScreenContent(
-    httpRequest: HttpRequest,
+    httpRequestEntity: HttpRequestEntity,
     onBackPressed: () -> Unit,
-    onTestPressed: (httpRequest: HttpRequest) -> Unit
+    onTestPressed: (httpRequestEntity: HttpRequestEntity) -> Unit
 ) {
     Column() {
         TopAppBar(
@@ -52,13 +51,13 @@ fun RequestScreenContent(
                 .padding(8.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(httpRequest.method.name)
-            Text(httpRequest.url)
+            Text(httpRequestEntity.method.name)
+            Text(httpRequestEntity.url)
         }
         Spacer(modifier = Modifier.weight(1f))
         Button(
             modifier = Modifier.padding(8.dp),
-            onClick = { onTestPressed(httpRequest) }
+            onClick = { onTestPressed(httpRequestEntity) }
         ) {
             Text(stringResource(id = R.string.test))
         }
@@ -69,7 +68,7 @@ fun RequestScreenContent(
 @Composable
 fun RequestScreenContentPreview() {
     RequestScreenContent(
-        httpRequest = HttpRequest(method = HttpMethod.GET, url = "https://google.com"),
+        httpRequestEntity = HttpRequestEntity(method = HttpMethod.GET, url = "https://google.com"),
         onBackPressed = { },
         onTestPressed = { }
     )

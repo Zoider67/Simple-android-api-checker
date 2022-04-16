@@ -12,37 +12,37 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.zoider.simpleapichecker.database.HttpMethod
-import com.zoider.simpleapichecker.database.query.HttpRequest
+import com.zoider.simpleapichecker.database.request.HttpRequestEntity
 import com.zoider.simpleapichecker.ui.components.Chip
 
 @Composable
-fun RequestsList(requests: List<HttpRequest>, onSelect: (id: Int) -> Unit = {}) {
+fun RequestsList(requestEntities: List<HttpRequestEntity>, onSelect: (id: Int) -> Unit = {}) {
     LazyColumn() {
-        items(requests) { query ->
-            RequestListItem(request = query, onSelect = onSelect)
+        items(requestEntities) { query ->
+            RequestListItem(requestEntity = query, onSelect = onSelect)
         }
     }
 }
 
 @Composable
-fun RequestListItem(request: HttpRequest, onSelect: (id: Int) -> Unit = {}) {
+fun RequestListItem(requestEntity: HttpRequestEntity, onSelect: (id: Int) -> Unit = {}) {
     Row(
         modifier = Modifier
             .padding(8.dp)
-            .clickable { onSelect(request.id) },
+            .clickable { onSelect(requestEntity.id) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Chip(modifier = Modifier.padding(start = 8.dp, end = 8.dp)) {
-            Text(request.method.name)
+            Text(requestEntity.method.name)
         }
-        Text(request.url)
+        Text(requestEntity.url)
     }
 }
 
 @Preview(name = "Query List Item", showBackground = true)
 @Composable
 fun RequestListItemPreview() {
-    RequestListItem(HttpRequest(method = HttpMethod.GET, url = "http://localhost/"))
+    RequestListItem(HttpRequestEntity(method = HttpMethod.GET, url = "http://localhost/"))
 }
 
 @Preview(name = "Queries List", showBackground = true)
@@ -50,9 +50,9 @@ fun RequestListItemPreview() {
 fun RequestListPreview() {
     RequestsList(
         listOf(
-            HttpRequest(method = HttpMethod.GET, url = "http://localhost/"),
-            HttpRequest(method = HttpMethod.GET, url = "http://google.com/"),
-            HttpRequest(method = HttpMethod.GET, url = "http://youtube.com/")
+            HttpRequestEntity(method = HttpMethod.GET, url = "http://localhost/"),
+            HttpRequestEntity(method = HttpMethod.GET, url = "http://google.com/"),
+            HttpRequestEntity(method = HttpMethod.GET, url = "http://youtube.com/")
         ),
     )
 }

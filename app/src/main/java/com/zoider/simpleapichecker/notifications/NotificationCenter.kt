@@ -5,7 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Context.NOTIFICATION_SERVICE
-import com.zoider.simpleapichecker.api.ApiState
+import com.zoider.simpleapichecker.http.ApiState
 
 class NotificationCenter(val context: Context) {
 

@@ -1,9 +1,4 @@
-package com.zoider.simpleapichecker.api
-
-import android.content.Context
-import android.net.ConnectivityManager
-import android.util.Log
-import com.zoider.simpleapichecker.schedulers.Task
+package com.zoider.simpleapichecker.http
 
 //class ApiCheckTask(val httpClient: CheckerHttpClient, val onCheck: (ApiState) -> Unit) : Task {
 //
