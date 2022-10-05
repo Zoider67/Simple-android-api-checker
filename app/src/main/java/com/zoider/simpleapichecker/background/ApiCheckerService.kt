@@ -1,4 +1,4 @@
-package com.zoider.simpleapichecker.services
+package com.zoider.simpleapichecker.background
 
 import android.app.Service
 import android.content.Intent
@@ -6,19 +6,16 @@ import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
 import com.zoider.simpleapichecker.ui.MainActivity
-import com.zoider.simpleapichecker.schedulers.IntervalExecutor
 import com.zoider.simpleapichecker.notifications.NotificationCenter
 
 class ApiCheckerService : Service() {
 
     private lateinit var notificationCenter: NotificationCenter
-    private lateinit var intervalExecutor: IntervalExecutor
 
     private val DEFAULT_INTERVAL_1_MIN: Long = 60000
 
     override fun onCreate() {
         notificationCenter = NotificationCenter(this)
-        intervalExecutor = IntervalExecutor()
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -60,7 +57,6 @@ class ApiCheckerService : Service() {
 //    }
 
     override fun onDestroy() {
-        intervalExecutor.cleanScope()
         Toast.makeText(this, "Service destroyed", Toast.LENGTH_SHORT).show()
         super.onDestroy()
     }

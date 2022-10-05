@@ -2,6 +2,7 @@ package com.zoider.simpleapichecker.ui.consts
 
 import android.graphics.Color
 import com.zoider.simpleapichecker.R
+import com.zoider.simpleapichecker.apichecker.ApiState
 
 enum class UIApiState(val resTitle: Int, val resIcon: Int, val resColor: Int) {
     SUCCESS(
@@ -17,5 +18,16 @@ enum class UIApiState(val resTitle: Int, val resIcon: Int, val resColor: Int) {
     ERROR(
         R.string.api_state_server_error,
         R.drawable.baseline_error_black_36,
-        Color.RED)
+        Color.RED
+    );
+
+    companion object {
+        fun of(state: ApiState): UIApiState {
+            return when (state) {
+                ApiState.SUCCESS -> SUCCESS
+                ApiState.NO_NETWORK -> NO_NETWORK
+                else -> ERROR
+            }
+        }
+    }
 }

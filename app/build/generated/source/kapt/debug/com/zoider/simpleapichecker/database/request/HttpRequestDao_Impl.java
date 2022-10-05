@@ -1,6 +1,7 @@
 package com.zoider.simpleapichecker.database.request;
 
 import android.database.Cursor;
+import androidx.lifecycle.LiveData;
 import androidx.room.CoroutinesRoom;
 import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
@@ -23,30 +24,30 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import javax.annotation.processing.Generated;
+import kotlin.Unit;
 import kotlin.coroutines.Continuation;
-import kotlinx.coroutines.flow.Flow;
 
 @Generated("androidx.room.RoomProcessor")
 @SuppressWarnings({"unchecked", "deprecation"})
 public final class HttpRequestDao_Impl implements HttpRequestDao {
   private final RoomDatabase __db;
 
-  private final EntityInsertionAdapter<HttpRequestEntity> __insertionAdapterOfHttpRequest;
+  private final EntityInsertionAdapter<HttpRequest> __insertionAdapterOfHttpRequest;
 
   private HttpMethodConverter __httpMethodConverter;
 
-  private final EntityDeletionOrUpdateAdapter<HttpRequestEntity> __deletionAdapterOfHttpRequest;
+  private final EntityDeletionOrUpdateAdapter<HttpRequest> __deletionAdapterOfHttpRequest;
 
   public HttpRequestDao_Impl(RoomDatabase __db) {
     this.__db = __db;
-    this.__insertionAdapterOfHttpRequest = new EntityInsertionAdapter<HttpRequestEntity>(__db) {
+    this.__insertionAdapterOfHttpRequest = new EntityInsertionAdapter<HttpRequest>(__db) {
       @Override
       public String createQuery() {
         return "INSERT OR ABORT INTO `HttpRequest` (`id`,`method`,`url`) VALUES (nullif(?, 0),?,?)";
       }
 
       @Override
-      public void bind(SupportSQLiteStatement stmt, HttpRequestEntity value) {
+      public void bind(SupportSQLiteStatement stmt, HttpRequest value) {
         stmt.bindLong(1, value.getId());
         final int _tmp = __httpMethodConverter().fromHttpMethod(value.getMethod());
         stmt.bindLong(2, _tmp);
@@ -57,21 +58,21 @@ public final class HttpRequestDao_Impl implements HttpRequestDao {
         }
       }
     };
-    this.__deletionAdapterOfHttpRequest = new EntityDeletionOrUpdateAdapter<HttpRequestEntity>(__db) {
+    this.__deletionAdapterOfHttpRequest = new EntityDeletionOrUpdateAdapter<HttpRequest>(__db) {
       @Override
       public String createQuery() {
         return "DELETE FROM `HttpRequest` WHERE `id` = ?";
       }
 
       @Override
-      public void bind(SupportSQLiteStatement stmt, HttpRequestEntity value) {
+      public void bind(SupportSQLiteStatement stmt, HttpRequest value) {
         stmt.bindLong(1, value.getId());
       }
     };
   }
 
   @Override
-  public Object insert(final HttpRequestEntity request, final Continuation<? super Long> continuation) {
+  public Object insert(final HttpRequest request, final Continuation<? super Long> continuation) {
     return CoroutinesRoom.execute(__db, true, new Callable<Long>() {
       @Override
       public Long call() throws Exception {
@@ -88,32 +89,37 @@ public final class HttpRequestDao_Impl implements HttpRequestDao {
   }
 
   @Override
-  public void delete(final HttpRequestEntity request) {
-    __db.assertNotSuspendingTransaction();
-    __db.beginTransaction();
-    try {
-      __deletionAdapterOfHttpRequest.handle(request);
-      __db.setTransactionSuccessful();
-    } finally {
-      __db.endTransaction();
-    }
+  public Object delete(final HttpRequest request, final Continuation<? super Unit> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      public Unit call() throws Exception {
+        __db.beginTransaction();
+        try {
+          __deletionAdapterOfHttpRequest.handle(request);
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+        }
+      }
+    }, continuation);
   }
 
   @Override
-  public Flow<List<HttpRequestEntity>> getAll() {
+  public LiveData<List<HttpRequest>> getAll() {
     final String _sql = "SELECT * FROM HttpRequest";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
-    return CoroutinesRoom.createFlow(__db, false, new String[]{"HttpRequest"}, new Callable<List<HttpRequestEntity>>() {
+    return __db.getInvalidationTracker().createLiveData(new String[]{"HttpRequest"}, false, new Callable<List<HttpRequest>>() {
       @Override
-      public List<HttpRequestEntity> call() throws Exception {
+      public List<HttpRequest> call() throws Exception {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfMethod = CursorUtil.getColumnIndexOrThrow(_cursor, "method");
           final int _cursorIndexOfUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "url");
-          final List<HttpRequestEntity> _result = new ArrayList<HttpRequestEntity>(_cursor.getCount());
+          final List<HttpRequest> _result = new ArrayList<HttpRequest>(_cursor.getCount());
           while(_cursor.moveToNext()) {
-            final HttpRequestEntity _item;
+            final HttpRequest _item;
             final int _tmpId;
             _tmpId = _cursor.getInt(_cursorIndexOfId);
             final HttpMethod _tmpMethod;
@@ -126,7 +132,7 @@ public final class HttpRequestDao_Impl implements HttpRequestDao {
             } else {
               _tmpUrl = _cursor.getString(_cursorIndexOfUrl);
             }
-            _item = new HttpRequestEntity(_tmpId,_tmpMethod,_tmpUrl);
+            _item = new HttpRequest(_tmpId,_tmpMethod,_tmpUrl);
             _result.add(_item);
           }
           return _result;
@@ -143,20 +149,20 @@ public final class HttpRequestDao_Impl implements HttpRequestDao {
   }
 
   @Override
-  public Flow<HttpRequestEntity> getById(final int id) {
+  public LiveData<HttpRequest> getById(final int id) {
     final String _sql = "SELECT * FROM HttpRequest WHERE id=?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
     _statement.bindLong(_argIndex, id);
-    return CoroutinesRoom.createFlow(__db, false, new String[]{"HttpRequest"}, new Callable<HttpRequestEntity>() {
+    return __db.getInvalidationTracker().createLiveData(new String[]{"HttpRequest"}, false, new Callable<HttpRequest>() {
       @Override
-      public HttpRequestEntity call() throws Exception {
+      public HttpRequest call() throws Exception {
         final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
         try {
           final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
           final int _cursorIndexOfMethod = CursorUtil.getColumnIndexOrThrow(_cursor, "method");
           final int _cursorIndexOfUrl = CursorUtil.getColumnIndexOrThrow(_cursor, "url");
-          final HttpRequestEntity _result;
+          final HttpRequest _result;
           if(_cursor.moveToFirst()) {
             final int _tmpId;
             _tmpId = _cursor.getInt(_cursorIndexOfId);
@@ -170,7 +176,7 @@ public final class HttpRequestDao_Impl implements HttpRequestDao {
             } else {
               _tmpUrl = _cursor.getString(_cursorIndexOfUrl);
             }
-            _result = new HttpRequestEntity(_tmpId,_tmpMethod,_tmpUrl);
+            _result = new HttpRequest(_tmpId,_tmpMethod,_tmpUrl);
           } else {
             _result = null;
           }

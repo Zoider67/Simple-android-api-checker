@@ -1,8 +1,6 @@
 package com.zoider.simpleapichecker.apichecker
 
-import com.zoider.simpleapichecker.apichecker.ApiState
-
 data class ApiCheckResult(
-    val stateUI: ApiState,
+    val state: ApiState,
     val body: String?
 )

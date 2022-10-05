@@ -1,22 +1,22 @@
 package com.zoider.simpleapichecker.database.request
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HttpRequestDao {
     @Insert
-    suspend fun insert(requestEntity: HttpRequestEntity): Long
+    suspend fun insert(request: HttpRequest): Long
 
     @Delete
-    fun delete(requestEntity: HttpRequestEntity)
+    suspend fun delete(request: HttpRequest)
 
-    @Query("SELECT * FROM HttpRequestEntity")
-    fun getAll(): Flow<List<HttpRequestEntity>>
+    @Query("SELECT * FROM HttpRequest")
+    fun getAll(): LiveData<List<HttpRequest>>
 
-    @Query("SELECT * FROM HttpRequestEntity WHERE id=:id")
-    fun getById(id: Int): Flow<HttpRequestEntity>
+    @Query("SELECT * FROM HttpRequest WHERE id=:id")
+    fun getById(id: Int): LiveData<HttpRequest>
 }

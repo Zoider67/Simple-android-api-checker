@@ -15,18 +15,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.commons.HttpMethod
-import com.zoider.simpleapichecker.database.request.HttpRequestEntity
+import com.zoider.simpleapichecker.database.request.HttpRequest
 import com.zoider.simpleapichecker.ui.Screen
 
 @Composable
 fun RequestsListScreen(navController: NavController, requestViewModel: RequestViewModel) {
-    val requestEntities: List<HttpRequestEntity> by requestViewModel.httpRequestsEntity.observeAsState(listOf())
+
+    val requests: List<HttpRequest> by requestViewModel.httpRequests.observeAsState(listOf())
     RequestsListScreenContent(
-        requestEntities = requestEntities,
+        requests = requests,
         onNewRequestClicked = { navController.navigate(Screen.CreateRequest.route) },
         onSelectRequest = {
             requestViewModel.select(it)
             navController.navigate(Screen.Request.route)
+        },
+        onDeleteRequest = {
+            requestViewModel.delete(it)
         }
     )
 }
@@ -34,8 +38,9 @@ fun RequestsListScreen(navController: NavController, requestViewModel: RequestVi
 @Composable
 fun RequestsListScreenContent(
     onNewRequestClicked: () -> Unit,
-    onSelectRequest: (id: Int) -> Unit,
-    requestEntities: List<HttpRequestEntity>
+    onSelectRequest: (httpRequest: HttpRequest) -> Unit,
+    onDeleteRequest: (httpRequest: HttpRequest) -> Unit,
+    requests: List<HttpRequest>
 ) {
     Column() {
         TopAppBar(
@@ -46,7 +51,7 @@ fun RequestsListScreenContent(
                 }
             }
         )
-        RequestsList(requestEntities = requestEntities, onSelect = onSelectRequest)
+        RequestsList(requests = requests, onSelect = onSelectRequest, onDelete = onDeleteRequest)
     }
 }
 
@@ -54,12 +59,13 @@ fun RequestsListScreenContent(
 @Composable
 fun RequestsScreenContentPreview() {
     RequestsListScreenContent(
-        requestEntities = listOf(
-            HttpRequestEntity(method = HttpMethod.GET, url = "http://localhost/"),
-            HttpRequestEntity(method = HttpMethod.GET, url = "http://google.com/"),
-            HttpRequestEntity(method = HttpMethod.GET, url = "http://youtube.com/")
+        requests = listOf(
+            HttpRequest(method = HttpMethod.GET, url = "http://localhost/"),
+            HttpRequest(method = HttpMethod.GET, url = "http://google.com/"),
+            HttpRequest(method = HttpMethod.GET, url = "http://youtube.com/")
         ),
         onNewRequestClicked = {},
-        onSelectRequest = {}
+        onSelectRequest = {},
+        onDeleteRequest = {}
     )
 }

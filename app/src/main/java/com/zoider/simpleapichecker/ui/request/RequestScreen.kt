@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.commons.HttpMethod
-import com.zoider.simpleapichecker.database.request.HttpRequestEntity
+import com.zoider.simpleapichecker.database.request.HttpRequest
 
 @Composable
 fun RequestScreen(
@@ -24,7 +24,7 @@ fun RequestScreen(
     val httpRequest by requestViewModel.selectedHttpRequest.observeAsState()
     httpRequest?.let {
         RequestScreenContent(
-            httpRequestEntity = it,
+            httpRequest = it,
             onBackPressed = { navController.popBackStack() },
             onTestPressed = { requestViewModel.executeRequest(it) }
         )
@@ -33,9 +33,9 @@ fun RequestScreen(
 
 @Composable
 fun RequestScreenContent(
-    httpRequestEntity: HttpRequestEntity,
+    httpRequest: HttpRequest,
     onBackPressed: () -> Unit,
-    onTestPressed: (httpRequestEntity: HttpRequestEntity) -> Unit
+    onTestPressed: (httpRequest: HttpRequest) -> Unit
 ) {
     Column() {
         TopAppBar(
@@ -51,13 +51,13 @@ fun RequestScreenContent(
                 .padding(8.dp)
                 .fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(httpRequestEntity.method.name)
-            Text(httpRequestEntity.url)
+            Text(httpRequest.method.name)
+            Text(httpRequest.url)
         }
         Spacer(modifier = Modifier.weight(1f))
         Button(
             modifier = Modifier.padding(8.dp),
-            onClick = { onTestPressed(httpRequestEntity) }
+            onClick = { onTestPressed(httpRequest) }
         ) {
             Text(stringResource(id = R.string.test))
         }
@@ -68,7 +68,7 @@ fun RequestScreenContent(
 @Composable
 fun RequestScreenContentPreview() {
     RequestScreenContent(
-        httpRequestEntity = HttpRequestEntity(method = HttpMethod.GET, url = "https://google.com"),
+        httpRequest = HttpRequest(method = HttpMethod.GET, url = "https://google.com"),
         onBackPressed = { },
         onTestPressed = { }
     )

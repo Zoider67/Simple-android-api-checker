@@ -4,13 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.room.DatabaseConfiguration;
 import androidx.room.InvalidationTracker;
 import androidx.room.RoomOpenHelper;
+import androidx.room.RoomOpenHelper.Delegate;
+import androidx.room.RoomOpenHelper.ValidationResult;
 import androidx.room.migration.AutoMigrationSpec;
 import androidx.room.migration.Migration;
 import androidx.room.util.DBUtil;
 import androidx.room.util.TableInfo;
+import androidx.room.util.TableInfo.Column;
+import androidx.room.util.TableInfo.ForeignKey;
+import androidx.room.util.TableInfo.Index;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import androidx.sqlite.db.SupportSQLiteOpenHelper;
-
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Callback;
+import androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration;
 import com.zoider.simpleapichecker.database.request.HttpRequestDao;
 import com.zoider.simpleapichecker.database.request.HttpRequestDao_Impl;
 import java.lang.Class;
@@ -32,7 +38,7 @@ public final class ApiCheckerDatabase_Impl extends ApiCheckerDatabase {
 
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(1) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(2) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `HttpRequest` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `method` INTEGER NOT NULL, `url` TEXT NOT NULL)");
@@ -90,7 +96,7 @@ public final class ApiCheckerDatabase_Impl extends ApiCheckerDatabase {
         final TableInfo _infoHttpRequest = new TableInfo("HttpRequest", _columnsHttpRequest, _foreignKeysHttpRequest, _indicesHttpRequest);
         final TableInfo _existingHttpRequest = TableInfo.read(_db, "HttpRequest");
         if (! _infoHttpRequest.equals(_existingHttpRequest)) {
-          return new RoomOpenHelper.ValidationResult(false, "HttpRequest(com.zoider.simpleapichecker.database.query.HttpRequest).\n"
+          return new RoomOpenHelper.ValidationResult(false, "HttpRequest(com.zoider.simpleapichecker.database.request.HttpRequest).\n"
                   + " Expected:\n" + _infoHttpRequest + "\n"
                   + " Found:\n" + _existingHttpRequest);
         }
