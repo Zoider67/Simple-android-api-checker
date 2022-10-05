@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.zoider.simpleapichecker.database.ApiCheckerDatabase
 import com.zoider.simpleapichecker.database.HttpMethodConverter
-import com.zoider.simpleapichecker.database.request.ApiTesterRepository
+import com.zoider.simpleapichecker.database.request.BaseRepository
 
 
 /**
@@ -17,8 +17,8 @@ object AppContainer {
     lateinit var database: ApiCheckerDatabase
         private set
 
-    val apiTesterRepository: ApiTesterRepository by lazy {
-        ApiTesterRepository(database.httpQueryDao())
+    val BASE_REPOSITORY: BaseRepository by lazy {
+        BaseRepository(database.httpQueryDao())
     }
 
     fun provide(context: Context) {

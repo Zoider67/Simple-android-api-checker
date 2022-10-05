@@ -1,4 +1,4 @@
-package com.zoider.simpleapichecker.apichecker
+package com.zoider.simpleapichecker.api
 
 data class ApiCheckResult(
     val state: ApiState,

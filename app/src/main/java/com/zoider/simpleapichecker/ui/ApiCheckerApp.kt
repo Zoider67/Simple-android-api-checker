@@ -1,9 +1,5 @@
 package com.zoider.simpleapichecker.ui
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
-import android.location.LocationManager
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -11,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.core.app.ActivityCompat
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
 import com.zoider.simpleapichecker.AppContainer
@@ -24,7 +19,6 @@ import com.zoider.simpleapichecker.ui.request.RequestsListScreen
 import com.zoider.simpleapichecker.ui.request.RequestViewModel
 import com.zoider.simpleapichecker.ui.task.TasksScreen
 import com.zoider.simpleapichecker.ui.theme.ApiCheckerTheme
-import java.util.logging.Handler
 
 @Composable
 fun ApiCheckerApp() {
@@ -68,7 +62,7 @@ fun ApiCheckerApp() {
                 //TODO: navigation via viewmodel, or navigation manager
                 navigation(startDestination = Screen.RequestsList.route, route = "request") {
                     val queryViewModel = RequestViewModel(
-                        AppContainer.apiTesterRepository,
+                        AppContainer.BASE_REPOSITORY,
                         ExecuteRequestUseCase {
                             notificationCenter.showApiStateNotification(UIApiState.of(it.state))
                         }

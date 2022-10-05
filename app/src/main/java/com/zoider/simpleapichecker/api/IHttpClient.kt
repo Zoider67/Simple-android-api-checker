@@ -1,4 +1,4 @@
-package com.zoider.simpleapichecker.apichecker
+package com.zoider.simpleapichecker.api
 
 import com.zoider.simpleapichecker.database.request.HttpRequest
 

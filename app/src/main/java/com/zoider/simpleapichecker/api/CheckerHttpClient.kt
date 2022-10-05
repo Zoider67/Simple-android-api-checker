@@ -1,7 +1,6 @@
 package com.zoider.simpleapichecker.api
 
 import android.util.Log
-import com.zoider.simpleapichecker.apichecker.IHttpClient
 import com.zoider.simpleapichecker.database.request.HttpRequest
 import okhttp3.*
 import ru.gildor.coroutines.okhttp.await

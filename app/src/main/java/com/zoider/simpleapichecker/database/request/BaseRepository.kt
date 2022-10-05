@@ -3,7 +3,7 @@ package com.zoider.simpleapichecker.database.request
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 
-class ApiTesterRepository(private val requestDao: HttpRequestDao) {
+class BaseRepository(private val requestDao: HttpRequestDao) {
 
     val allHttpRequests: LiveData<List<HttpRequest>> = requestDao.getAll()
 

@@ -2,7 +2,7 @@ package com.zoider.simpleapichecker.ui.consts
 
 import android.graphics.Color
 import com.zoider.simpleapichecker.R
-import com.zoider.simpleapichecker.apichecker.ApiState
+import com.zoider.simpleapichecker.api.ApiState
 
 enum class UIApiState(val resTitle: Int, val resIcon: Int, val resColor: Int) {
     SUCCESS(
