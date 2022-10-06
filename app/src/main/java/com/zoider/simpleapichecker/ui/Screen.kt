@@ -10,8 +10,9 @@ import com.zoider.simpleapichecker.R
 
 sealed class Screen(val route: String, @StringRes val label: Int, val icon: ImageVector) {
     //TODO: make common class for storing routes
-    object RequestsList : Screen("request/list", R.string.requests_title, Icons.Filled.Http)
-    object CreateRequest : Screen("request/new", R.string.create_request, Icons.Filled.Add)
-    object Request : Screen("request/screen", R.string.request_screen, Icons.Filled.Http)
-    object Tasks : Screen("tasks", R.string.tasks, Icons.Filled.Task)
+    object RequestsList : Screen("/request/list", R.string.requests_title, Icons.Filled.Http)
+    object CreateRequest : Screen("/request/new", R.string.create_request, Icons.Filled.Add)
+    object Request : Screen("/request/screen", R.string.request_screen, Icons.Filled.Http)
+    object TasksList : Screen("/task/list", R.string.tasks, Icons.Filled.Task)
+    object CreateTask: Screen("/task/new", R.string.new_task, Icons.Filled.Add)
 }

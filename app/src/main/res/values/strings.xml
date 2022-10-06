@@ -25,4 +25,6 @@
     <string name="error">Error</string>
     <string name="invalid_url">Invalid url</string>
     <string name="request_screen">Request</string>
+    <string name="tasks_title">Tasks</string>
+    <string name="new_task">New task</string>
 </resources>

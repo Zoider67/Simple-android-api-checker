@@ -17,13 +17,15 @@ import com.zoider.simpleapichecker.ui.request.CreateRequestScreen
 import com.zoider.simpleapichecker.ui.request.RequestScreen
 import com.zoider.simpleapichecker.ui.request.RequestsListScreen
 import com.zoider.simpleapichecker.ui.request.RequestViewModel
+import com.zoider.simpleapichecker.ui.task.CreateTaskScreen
+import com.zoider.simpleapichecker.ui.task.TaskViewModel
 import com.zoider.simpleapichecker.ui.task.TasksScreen
 import com.zoider.simpleapichecker.ui.theme.ApiCheckerTheme
 
 @Composable
 fun ApiCheckerApp() {
     ApiCheckerTheme {
-        val navItems = listOf(Screen.RequestsList, Screen.Tasks)
+        val navItems = listOf(Screen.RequestsList, Screen.TasksList)
         val navController = rememberNavController()
         //TODO: move to DI container!!!
         val notificationCenter = NotificationCenter(LocalContext.current)
@@ -56,7 +58,7 @@ fun ApiCheckerApp() {
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = Screen.Tasks.route,
+                startDestination = "task",
                 Modifier.padding(innerPadding)
             ) {
                 //TODO: navigation via viewmodel, or navigation manager
@@ -85,7 +87,24 @@ fun ApiCheckerApp() {
                         )
                     }
                 }
-                composable(Screen.Tasks.route) { TasksScreen(navController = navController) }
+                navigation(startDestination = Screen.TasksList.route, route = "task") {
+                    val taskViewModel = TaskViewModel(
+                        AppContainer.taskRepository,
+                        AppContainer.BASE_REPOSITORY
+                    )
+                    composable(Screen.TasksList.route) {
+                        TasksScreen(
+                            navController = navController,
+                            taskViewModel = taskViewModel
+                        )
+                    }
+                    composable(Screen.CreateTask.route) {
+                        CreateTaskScreen(
+                            navController = navController,
+                            taskViewModel = taskViewModel
+                        )
+                    }
+                }
             }
         }
     }
