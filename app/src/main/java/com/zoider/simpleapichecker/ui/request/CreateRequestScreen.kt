@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.commons.HttpMethod
@@ -26,7 +27,10 @@ import com.zoider.simpleapichecker.ui.components.form.CustomTextField
 import com.zoider.simpleapichecker.ui.components.form.UrlValidationState
 
 @Composable
-fun CreateRequestScreen(navController: NavController, requestViewModel: RequestViewModel) {
+fun CreateRequestScreen(
+    navController: NavController,
+    requestViewModel: RequestViewModel = hiltViewModel(navController.getBackStackEntry("request"))
+) {
     CreateRequestScreenContent(
         onBackPressed = { navController.navigate(Screen.RequestsList.route) },
         onSavePressed = { httpQuery ->

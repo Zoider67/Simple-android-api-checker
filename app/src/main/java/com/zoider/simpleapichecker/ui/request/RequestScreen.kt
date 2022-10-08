@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.commons.HttpMethod
@@ -19,7 +20,7 @@ import com.zoider.simpleapichecker.database.request.HttpRequest
 @Composable
 fun RequestScreen(
     navController: NavController,
-    requestViewModel: RequestViewModel,
+    requestViewModel: RequestViewModel = hiltViewModel(navController.getBackStackEntry("request")),
 ) {
     val httpRequest by requestViewModel.selectedHttpRequest.observeAsState()
     httpRequest?.let {

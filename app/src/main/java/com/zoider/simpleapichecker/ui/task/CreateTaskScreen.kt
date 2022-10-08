@@ -12,12 +12,13 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.ui.Screen
 
 @Composable
-fun CreateTaskScreen(navController: NavController, taskViewModel: TaskViewModel) {
+fun CreateTaskScreen(navController: NavController, taskViewModel: TaskViewModel = hiltViewModel()) {
     CreateTaskScreenContent { navController.navigate(Screen.TasksList.route) }
 }
 

@@ -9,17 +9,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.*
-import com.zoider.simpleapichecker.AppContainer
-import com.zoider.simpleapichecker.domain.ExecuteRequestUseCase
 import com.zoider.simpleapichecker.notifications.NotificationCenter
-import com.zoider.simpleapichecker.ui.consts.UIApiState
-import com.zoider.simpleapichecker.ui.request.CreateRequestScreen
-import com.zoider.simpleapichecker.ui.request.RequestScreen
-import com.zoider.simpleapichecker.ui.request.RequestsListScreen
-import com.zoider.simpleapichecker.ui.request.RequestViewModel
-import com.zoider.simpleapichecker.ui.task.CreateTaskScreen
-import com.zoider.simpleapichecker.ui.task.TaskViewModel
-import com.zoider.simpleapichecker.ui.task.TasksScreen
+import com.zoider.simpleapichecker.ui.theme.ApiCheckerNavGraph
 import com.zoider.simpleapichecker.ui.theme.ApiCheckerTheme
 
 @Composable
@@ -56,56 +47,10 @@ fun ApiCheckerApp() {
                 }
             }
         ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = "task",
-                Modifier.padding(innerPadding)
-            ) {
-                //TODO: navigation via viewmodel, or navigation manager
-                navigation(startDestination = Screen.RequestsList.route, route = "request") {
-                    val queryViewModel = RequestViewModel(
-                        AppContainer.BASE_REPOSITORY,
-                        ExecuteRequestUseCase {
-                            notificationCenter.showApiStateNotification(UIApiState.of(it.state))
-                        }
-                    )
-                    composable(Screen.RequestsList.route) {
-                        RequestsListScreen(
-                            navController = navController,
-                            requestViewModel = queryViewModel
-                        )
-                    }
-                    composable(Screen.CreateRequest.route) {
-                        CreateRequestScreen(
-                            navController = navController,
-                            requestViewModel = queryViewModel
-                        )
-                    }
-                    composable(Screen.Request.route) {
-                        RequestScreen(
-                            navController = navController, requestViewModel = queryViewModel
-                        )
-                    }
-                }
-                navigation(startDestination = Screen.TasksList.route, route = "task") {
-                    val taskViewModel = TaskViewModel(
-                        AppContainer.taskRepository,
-                        AppContainer.BASE_REPOSITORY
-                    )
-                    composable(Screen.TasksList.route) {
-                        TasksScreen(
-                            navController = navController,
-                            taskViewModel = taskViewModel
-                        )
-                    }
-                    composable(Screen.CreateTask.route) {
-                        CreateTaskScreen(
-                            navController = navController,
-                            taskViewModel = taskViewModel
-                        )
-                    }
-                }
-            }
+            ApiCheckerNavGraph(
+                modifier = Modifier.padding(innerPadding),
+                navController = navController
+            )
         }
     }
 }

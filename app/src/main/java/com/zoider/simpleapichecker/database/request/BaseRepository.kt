@@ -2,8 +2,9 @@ package com.zoider.simpleapichecker.database.request
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import javax.inject.Inject
 
-class BaseRepository(private val requestDao: HttpRequestDao) {
+class BaseRepository @Inject constructor(private val requestDao: HttpRequestDao) {
 
     val allHttpRequests: LiveData<List<HttpRequest>> = requestDao.getAll()
 

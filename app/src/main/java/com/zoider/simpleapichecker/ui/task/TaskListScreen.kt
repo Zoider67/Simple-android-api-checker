@@ -9,12 +9,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.ui.Screen
 
 @Composable
-fun TasksScreen(navController: NavController, taskViewModel: TaskViewModel) {
+fun TasksScreen(navController: NavController, taskViewModel: TaskViewModel = hiltViewModel()) {
     TasksScreenContent(navController, taskViewModel)
 }
 

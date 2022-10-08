@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.commons.HttpMethod
@@ -19,7 +20,12 @@ import com.zoider.simpleapichecker.database.request.HttpRequest
 import com.zoider.simpleapichecker.ui.Screen
 
 @Composable
-fun RequestsListScreen(navController: NavController, requestViewModel: RequestViewModel) {
+fun RequestsListScreen(
+    navController: NavController,
+    requestViewModel: RequestViewModel = hiltViewModel(
+        navController.getBackStackEntry("request")
+    )
+) {
 
     val requests: List<HttpRequest> by requestViewModel.httpRequests.observeAsState(listOf())
     RequestsListScreenContent(

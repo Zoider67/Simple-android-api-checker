@@ -1,15 +1,23 @@
 package com.zoider.simpleapichecker.ui.request
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.zoider.simpleapichecker.ExceptionHandler
+import com.zoider.simpleapichecker.api.ApiCheckResult
+import com.zoider.simpleapichecker.api.ApiState
+import com.zoider.simpleapichecker.api.CheckerHttpClient
 import com.zoider.simpleapichecker.database.request.BaseRepository
 import com.zoider.simpleapichecker.database.request.HttpRequest
-import com.zoider.simpleapichecker.domain.ExecuteRequestUseCase
+import com.zoider.simpleapichecker.notifications.NotificationCenter
+import com.zoider.simpleapichecker.ui.consts.UIApiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RequestViewModel(
+@HiltViewModel
+class RequestViewModel @Inject constructor(
     private val baseRepository: BaseRepository,
-    private val executeRequestUseCase: ExecuteRequestUseCase
+    private val notificationCenter: NotificationCenter
 ) : ViewModel() {
 
     val httpRequests: LiveData<List<HttpRequest>> = baseRepository.allHttpRequests
@@ -21,7 +29,11 @@ class RequestViewModel(
 
     fun executeRequest(httpRequest: HttpRequest) =
         viewModelScope.launch(ExceptionHandler.coroutineExceptionHandler) {
-            executeRequestUseCase(httpRequest)
+            Log.d("ExecuteRequestUseCase", "invoke http request on ${httpRequest.url}")
+            CheckerHttpClient().executeRequest(httpRequest) { isSuccesful, body ->
+                val apiState = if (isSuccesful) ApiState.SUCCESS else ApiState.ERROR
+                notificationCenter.showApiStateNotification(UIApiState.of(apiState))
+            }
         }
 
     fun select(httpRequest: HttpRequest) {
