@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.zoider.simpleapichecker.R
-import com.zoider.simpleapichecker.views.activities.MainActivity
-import com.zoider.simpleapichecker.api.ApiState
+import com.zoider.simpleapichecker.ui.MainActivity
+import com.zoider.simpleapichecker.ui.consts.UIApiState
 import java.time.LocalDateTime
 
 class ApiStatusNotification(val context: Context, val channelId: String) {
@@ -23,12 +23,12 @@ class ApiStatusNotification(val context: Context, val channelId: String) {
             )
         }
 
-    fun build(state: ApiState): Notification {
+    fun build(stateUI: UIApiState): Notification {
         return NotificationCompat.Builder(context, channelId)
-            .setSmallIcon(state.resIcon)
-            .setColor(state.resColor)
+            .setSmallIcon(stateUI.resIcon)
+            .setColor(stateUI.resColor)
             .setContentTitle(
-                "${context.getString(R.string.api_notification_status)} ${context.getString(state.resTitle)}"
+                "${context.getString(R.string.api_notification_status)} ${context.getString(stateUI.resTitle)}"
             )
             .setContentText(
                 "${context.getString(R.string.api_notification_last_update)} ${LocalDateTime.now()}"

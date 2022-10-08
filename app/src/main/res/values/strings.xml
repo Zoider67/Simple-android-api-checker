@@ -14,4 +14,17 @@
     <string name="minutes">Minutes</string>
     <string name="hours">Hours</string>
     <string name="seconds">Seconds</string>
+    <string name="request">requests</string>
+    <string name="requests_title">HTTP Requests</string>
+    <string name="tasks">tasks</string>
+    <string name="create_request">Create request</string>
+    <string name="new_http_request">New HTTP request</string>
+    <string name="back">Back</string>
+    <string name="save">Save</string>
+    <string name="test">test</string>
+    <string name="error">Error</string>
+    <string name="invalid_url">Invalid url</string>
+    <string name="request_screen">Request</string>
+    <string name="tasks_title">Tasks</string>
+    <string name="new_task">New task</string>
 </resources>

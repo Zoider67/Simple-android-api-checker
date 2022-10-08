@@ -2,6 +2,7 @@ package com.zoider.simpleapichecker.database
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
+import com.zoider.simpleapichecker.commons.HttpMethod
 
 @ProvidedTypeConverter
 class HttpMethodConverter {
