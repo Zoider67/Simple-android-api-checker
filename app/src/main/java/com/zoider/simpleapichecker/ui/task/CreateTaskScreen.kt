@@ -15,26 +15,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
+import com.zoider.simpleapichecker.ui.LeafScreen
 import com.zoider.simpleapichecker.ui.Screen
 
 @Composable
 fun CreateTaskScreen(navController: NavController, taskViewModel: TaskViewModel = hiltViewModel()) {
-    CreateTaskScreenContent { navController.navigate(Screen.TasksList.route) }
+    CreateTaskScreenContent()
 }
 
 @Composable
 fun CreateTaskScreenContent(
-    onBackPressed: () -> Unit,
 ) {
     Column() {
-        TopAppBar(
-            navigationIcon = {
-                IconButton(onClick = {  }) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
-                }
-            },
-            title = { Text(stringResource(R.string.new_task)) }
-        )
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
             Text("Request:")
 
@@ -44,6 +36,6 @@ fun CreateTaskScreenContent(
 
 @Preview(name = "Create task screen")
 @Composable
-fun CreateTaskScreenPreview(){
-    CreateTaskScreenContent({})
+fun CreateTaskScreenPreview() {
+    CreateTaskScreenContent()
 }

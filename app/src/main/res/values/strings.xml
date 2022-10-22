@@ -16,7 +16,7 @@
     <string name="seconds">Seconds</string>
     <string name="request">requests</string>
     <string name="requests_title">HTTP Requests</string>
-    <string name="tasks">tasks</string>
+    <string name="tasks">Tasks</string>
     <string name="create_request">Create request</string>
     <string name="new_http_request">New HTTP request</string>
     <string name="back">Back</string>

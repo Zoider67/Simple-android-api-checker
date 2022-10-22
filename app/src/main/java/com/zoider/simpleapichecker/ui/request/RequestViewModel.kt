@@ -21,7 +21,7 @@ class RequestViewModel @Inject constructor(
 ) : ViewModel() {
 
     val httpRequests: LiveData<List<HttpRequest>> = baseRepository.allHttpRequests
-    val selectedHttpRequest = MutableLiveData<HttpRequest>()
+    val selectedHttpRequest = MutableLiveData<HttpRequest?>()
 
     fun create(request: HttpRequest) = viewModelScope.launch {
         baseRepository.createRequest(request)
@@ -36,8 +36,8 @@ class RequestViewModel @Inject constructor(
             }
         }
 
-    fun select(httpRequest: HttpRequest) {
-        selectedHttpRequest.postValue(httpRequest)
+    fun get(requestId: String): LiveData<HttpRequest> {
+        return baseRepository.getRequestById(requestId.toInt())
     }
 
     fun delete(httpRequest: HttpRequest) = viewModelScope.launch {

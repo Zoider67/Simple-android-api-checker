@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,14 +20,13 @@ import com.zoider.simpleapichecker.database.request.HttpRequest
 
 @Composable
 fun RequestScreen(
-    navController: NavController,
-    requestViewModel: RequestViewModel = hiltViewModel(navController.getBackStackEntry("request")),
+    requestId: String,
+    requestViewModel: RequestViewModel = hiltViewModel(),
 ) {
-    val httpRequest by requestViewModel.selectedHttpRequest.observeAsState()
+    val httpRequest by requestViewModel.get(requestId).observeAsState()
     httpRequest?.let {
         RequestScreenContent(
             httpRequest = it,
-            onBackPressed = { navController.popBackStack() },
             onTestPressed = { requestViewModel.executeRequest(it) }
         )
     }
@@ -35,18 +35,9 @@ fun RequestScreen(
 @Composable
 fun RequestScreenContent(
     httpRequest: HttpRequest,
-    onBackPressed: () -> Unit,
     onTestPressed: (httpRequest: HttpRequest) -> Unit
 ) {
     Column() {
-        TopAppBar(
-            navigationIcon = {
-                IconButton(onClick = onBackPressed) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
-                }
-            },
-            title = { Text(stringResource(R.string.request)) }
-        )
         Row(
             modifier = Modifier
                 .padding(8.dp)
@@ -70,7 +61,6 @@ fun RequestScreenContent(
 fun RequestScreenContentPreview() {
     RequestScreenContent(
         httpRequest = HttpRequest(method = HttpMethod.GET, url = "https://google.com"),
-        onBackPressed = { },
         onTestPressed = { }
     )
 }

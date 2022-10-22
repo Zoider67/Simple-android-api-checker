@@ -14,13 +14,8 @@ class BaseRepository @Inject constructor(private val requestDao: HttpRequestDao)
     }
 
     @WorkerThread
-    suspend fun getAllHttpRequests(): List<HttpRequest>? {
-        return requestDao.getAll().value
-    }
-
-    @WorkerThread
-    suspend fun getRequestById(id: Int): HttpRequest? {
-        return requestDao.getById(id).value
+    fun getRequestById(id: Int): LiveData<HttpRequest> {
+        return requestDao.getById(id)
     }
 
     @WorkerThread

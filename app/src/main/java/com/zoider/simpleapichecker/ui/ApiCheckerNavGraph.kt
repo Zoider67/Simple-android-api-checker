@@ -1,12 +1,14 @@
 package com.zoider.simpleapichecker.ui.theme
 
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
+import com.zoider.simpleapichecker.ui.LeafScreen
 import com.zoider.simpleapichecker.ui.Screen
 import com.zoider.simpleapichecker.ui.request.CreateRequestScreen
 import com.zoider.simpleapichecker.ui.request.RequestScreen
@@ -24,30 +26,32 @@ fun ApiCheckerNavGraph(
         navController = navController,
         startDestination = "task",
     ) {
-        navigation(startDestination = Screen.RequestsList.route, route = "request") {
-            composable(Screen.RequestsList.route) {
+        navigation(startDestination = LeafScreen.RequestsList.route, route = Screen.Request.route) {
+            composable(LeafScreen.RequestsList.route) {
                 RequestsListScreen(
                     navController = navController,
                 )
             }
-            composable(Screen.CreateRequest.route) {
+            composable(LeafScreen.CreateRequest.route) {
                 CreateRequestScreen(
                     navController = navController,
                 )
             }
-            composable(Screen.Request.route) {
-                RequestScreen(
-                    navController = navController
-                )
+            //TODO: add nav arguments as parameters of LeafScreen class. Maybe function to return List<navArgumant>???
+            composable(
+                "${LeafScreen.RequestScreen.route}{requestId}",
+                arguments = listOf(navArgument("requestId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                RequestScreen(backStackEntry.arguments?.getString("requestId").toString())
             }
         }
-        navigation(startDestination = Screen.TasksList.route, route = "task") {
-            composable(Screen.TasksList.route) {
+        navigation(startDestination = LeafScreen.TasksList.route, route = Screen.Task.route) {
+            composable(LeafScreen.TasksList.route) {
                 TasksScreen(
                     navController = navController,
                 )
             }
-            composable(Screen.CreateTask.route) {
+            composable(LeafScreen.CreateTask.route) {
                 CreateTaskScreen(
                     navController = navController,
                 )

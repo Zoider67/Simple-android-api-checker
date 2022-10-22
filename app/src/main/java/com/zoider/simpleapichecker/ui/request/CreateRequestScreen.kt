@@ -3,9 +3,9 @@ package com.zoider.simpleapichecker.ui.request
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.Button
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -21,7 +21,7 @@ import androidx.navigation.NavController
 import com.zoider.simpleapichecker.R
 import com.zoider.simpleapichecker.commons.HttpMethod
 import com.zoider.simpleapichecker.database.request.HttpRequest
-import com.zoider.simpleapichecker.ui.Screen
+import com.zoider.simpleapichecker.ui.LeafScreen
 import com.zoider.simpleapichecker.ui.components.Select
 import com.zoider.simpleapichecker.ui.components.form.CustomTextField
 import com.zoider.simpleapichecker.ui.components.form.UrlValidationState
@@ -32,10 +32,9 @@ fun CreateRequestScreen(
     requestViewModel: RequestViewModel = hiltViewModel(navController.getBackStackEntry("request"))
 ) {
     CreateRequestScreenContent(
-        onBackPressed = { navController.navigate(Screen.RequestsList.route) },
         onSavePressed = { httpQuery ->
             requestViewModel.create(httpQuery)
-            navController.navigate(Screen.RequestsList.route)
+            navController.navigate(LeafScreen.RequestsList.route)
         },
         onTestPressed = {
             requestViewModel.executeRequest(it)
@@ -45,7 +44,6 @@ fun CreateRequestScreen(
 
 @Composable
 fun CreateRequestScreenContent(
-    onBackPressed: () -> Unit,
     onSavePressed: (httpRequest: HttpRequest) -> Unit,
     onTestPressed: (httpRequest: HttpRequest) -> Unit,
 ) {
@@ -56,14 +54,6 @@ fun CreateRequestScreenContent(
     val focusManager = LocalFocusManager.current
 
     Column() {
-        TopAppBar(
-            navigationIcon = {
-                IconButton(onClick = onBackPressed) {
-                    Icon(Icons.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
-                }
-            },
-            title = { Text(stringResource(R.string.new_http_request)) }
-        )
         Row(modifier = Modifier.padding(8.dp)) {
             Select(
                 modifier = Modifier.padding(end = 8.dp),
@@ -115,7 +105,6 @@ fun CreateRequestScreenContent(
 @Composable
 fun CreateRequestScreenPreview() {
     CreateRequestScreenContent(
-        onBackPressed = { },
         onSavePressed = { },
         onTestPressed = { }
     )
