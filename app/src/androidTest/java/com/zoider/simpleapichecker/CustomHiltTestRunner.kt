@@ -3,6 +3,7 @@ package com.zoider.simpleapichecker
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
 //import dagger.hilt.android.testing.HiltTestApplication
 
@@ -16,7 +17,7 @@ class CustomHiltTestRunner : AndroidJUnitRunner() {
     ): Application {
         return super.newApplication(
             cl,
-            CustomHiltTestACApplication_Application::class.java.name,
+            HiltTestApplication::class.java.name,
             context
         )
     }

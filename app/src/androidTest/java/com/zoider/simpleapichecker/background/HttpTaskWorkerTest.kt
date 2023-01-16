@@ -1,10 +1,13 @@
 package com.zoider.simpleapichecker.background
 
 import android.content.Context
+import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.test.platform.app.InstrumentationRegistry
+import androidx.work.*
+import androidx.work.testing.SynchronousExecutor
 import androidx.work.testing.TestListenableWorkerBuilder
-import androidx.work.workDataOf
+import androidx.work.testing.WorkManagerTestInitHelper
 import com.zoider.simpleapichecker.background.HttpTaskWorker.Companion.HTTP_REQUEST_ID
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -24,24 +27,30 @@ class HttpTaskWorkerTest {
     @get:Rule
     val hiltRule = HiltAndroidRule(this)
 
-    private val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
-//    private val context: Context = hilt
+    val context: Context = InstrumentationRegistry.getInstrumentation().targetContext
 
 
     @Before
     fun setUp() {
         hiltRule.inject()
+
+        val config = Configuration.Builder().run {
+            setWorkerFactory(workerFactory)
+            setMinimumLoggingLevel(Log.DEBUG)
+            setExecutor(SynchronousExecutor())
+            build()
+        }
+
+        WorkManagerTestInitHelper.initializeTestWorkManager(context, config)
     }
 
     @Test
     fun testHttpTaskWorker() {
-        val worker = TestListenableWorkerBuilder<HttpTaskWorker>(
-            context,
-            inputData = workDataOf(HTTP_REQUEST_ID to 0)
-        ).setWorkerFactory(workerFactory)
-            .build()
-        runBlocking {
-            val result = worker.doWork()
-        }
+        val workManager = WorkManager.getInstance(context)
+        val request = OneTimeWorkRequestBuilder<HttpTaskWorker>().apply {
+//            setInputData(Data.Builder().apply { putString() }.build())
+        }.build()
+        val workInfo = workManager.enqueue(request).result.get()
+        println(workInfo.toString())
     }
 }

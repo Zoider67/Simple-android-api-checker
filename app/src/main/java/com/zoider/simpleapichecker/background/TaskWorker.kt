@@ -39,6 +39,8 @@ class HttpTaskWorker @AssistedInject constructor(
             }
         }
 
+        println("HELLO WORLD")
+
         return Result.success()
     }
 }
